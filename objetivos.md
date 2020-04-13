@@ -19,4 +19,5 @@ Secundarios (a lo que deseamos lograr)
 - Cambiar los colores de acuerdo a la foto del albúm de la canción que está actualemente
 - Cambiar el estilo (no los colores) de la página
 - Obtener información sobre el artista o album al seleccionarlo en pantalla
-- Den ideas, ninguna es mala.
+- Visualizador de canciones (Investigar esto)
+- Den ideas, ninguna es mala
