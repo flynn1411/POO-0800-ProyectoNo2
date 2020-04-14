@@ -37,6 +37,19 @@ input#searchBox{
     width: 84%;
     height: auto;
 }
+div#resultsToSearch{
+    position: absolute;
+    top: 75%;
+    display: none;
+    left: 6%;
+    width: 85.1%;
+    height: 320%;
+    background-color: azure;
+    z-index: 1;
+    transition-property: top;
+    transition-duration: 3s;
+
+}
 img#downloadIcon{
     left: 94%;
 }
@@ -71,6 +84,10 @@ div#artist{
     top: 6%;
     left: 4%;
     background-color: white;
+}
+table#tableOfResults td{
+    min-width: 1360px;
+    height: 15%;
 }
 table{
     position: absolute;
@@ -141,6 +158,14 @@ audio{
     left: 0px;
     width: 67%;
     background-color: red;
+}
+div#controllers{
+    position: absolute;
+    top: 77%;
+    left: 0%;
+    width: 67%;
+    height: 15%;
+    background-color: black;
 }
 /* ==========================> AREA DE VISUALIZACION DE INFORMACION DE LA CANCION <================================*/
 div#viewLyric{
