@@ -1,0 +1,184 @@
+@charset "UTF-8";
+/*==============================> TEMAS <======================================*/
+.default{
+    --bg-upperArea :#343057;
+    --bg-leftArea :#BB5E5E;
+    --bg-rightArea :#AE3434;
+    --bg-centerArea :#BB5E5E; 
+}
+.light{
+
+}
+.dark{
+
+}
+
+/* ============================> AREA DE BUSQUEDA <============================*/
+div#head{
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    background-color: var(--bg-upperArea);
+    top: 0;
+    left: 0;
+}
+.icon{
+    position: absolute;
+    display: inline-block;
+    width: 3%;
+    height: 70%;
+    top: 10%;
+}
+input#searchBox{
+    position: absolute;
+    display: inline-block;
+    top: 29%;
+    left: 6%;
+    width: 84%;
+    height: auto;
+}
+img#downloadIcon{
+    left: 94%;
+}
+img#homeIcon{
+    left: 1%;
+}
+
+/* ============================> AREA DE LISTADO DE ARTISTA - ALBUM <============================*/
+div#viewAlbumAndArtist{
+    position: absolute;
+    width: 25%;
+    height: 90%;
+    background-color: var(--bg-leftArea);
+    top: 10%;
+    left: 0;
+}
+
+/* -------------------------- NAVEGADOR DE ARTISTAS -------------------------- */ 
+#titleArtist{
+    position: absolute;
+    top: 1%;
+    left: 4%;
+    font-size: 25px;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+}
+div#artist{
+    overflow:auto;
+    position: absolute;
+    width: 91%;
+    height: 42%;
+    top: 6%;
+    left: 4%;
+    background-color: white;
+}
+table{
+    position: absolute;
+    display: block;
+    background-color: white;
+    top:0;
+    font-size: 17px;
+    width: 100%;
+    height: auto;
+    border-collapse: collapse;
+}
+tr:nth-child(even){
+    background-color: #ddd;
+}
+
+tr:hover td{
+    background-color: #55BB6A;
+    color: white;
+    cursor: pointer;
+}
+td {
+    min-width: 361px;
+    height: 15%;
+}
+/* -------------------------- NAVEGADOR DE ALBUMES -------------------------- */
+#titleAlbum{
+    position: absolute;
+    top: 51%;
+    left: 4%;
+    font-size: 25px;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+}
+div#album{
+    position: absolute;
+    width: 91%;
+    height: 42%;
+    top: 56%;
+    left: 4%;
+    background-color: #fff;
+}
+
+/* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
+div#viewInfo{
+    position: absolute;
+    width: 75%;
+    height: 90%;
+    background-color: var(--bg-rightArea);
+    top: 10%;
+    left: 25%;
+}
+img#albumImage{
+    position: absolute;
+    display: inline-block;
+    width: 25%;
+    height: auto;
+    top: 8%;
+    left: 22%;
+}
+#textCurrentSong{
+    position: absolute;
+    top: 55%;
+    left: 17%;
+}
+audio{
+    position: absolute;
+    top: 92%;
+    left: 0px;
+    width: 67%;
+    background-color: red;
+}
+/* ==========================> AREA DE VISUALIZACION DE INFORMACION DE LA CANCION <================================*/
+div#viewLyric{
+    position: absolute;
+    width: 25%;
+    height: 90%;
+    background-color: var(--bg-centerArea);
+    top: 10%;
+    left: 75%;
+}
+div#lyric{
+    position: absolute;
+    text-align: center;
+    justify-content: center;
+    background-color: #E0D8D8;
+    color: black;
+    top: 6%;
+    left: 5%;
+    width: 91%;
+    height: 89%;
+    border-spacing: 5px;
+}
+p{
+    font-size: 20px;
+    font-family: 'Baloo Bhaina 2', cursive;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+/*========================== RESPONSIVE ========================================*/
+
+@media screen and (max-width: 720px){
+    div#viewInfo{
+        background-color: green;
+    }
+    img#downloadIcon{
+        width: 6.5%;
+        height: 43px;
+        top:25%;
+    }
+}
