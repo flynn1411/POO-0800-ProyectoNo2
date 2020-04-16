@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Lector de archivos y directorios.
- * @version 0.1.0
+ * @version 0.1.1
  * */
 public class FileManager {
 
@@ -26,10 +26,10 @@ public class FileManager {
 	 * @param String fileName Nombre del archivo
 	 * @return filePath
 	 * */
-	public String getPath(String fileName){
+	public String getPath(String fileName, String directory){
 		String filePath;
 		
-		File file = new File(String.format("%s/%s", this.directory, fileName));
+		File file = new File(String.format("%s/%s", directory, fileName));
 		
 		if(file.exists()) {
 			filePath = file.getAbsolutePath();
@@ -40,20 +40,66 @@ public class FileManager {
 		return filePath;
 	}
 	
-	public ArrayList<String> listFiles() {
+	/** 
+	 * Metódo que busca archivos con una terminación específica
+	 * @param fileType Terminación del archivo a buscar.
+	 * @return Lista de archivos encontrados.
+	 * */
+	public ArrayList<String[]> findFiles(String fileType) {
 		File currentDirectory = new File(this.directory);
 		
-		ArrayList<String> foundSongs = new ArrayList<String>();
+		ArrayList<String[]> foundFiles = new ArrayList<String[]>();
 		
 		File[] fileList = currentDirectory.listFiles();
 		
 		for(File currentFile: fileList) {
-			if(currentFile.isFile() && (currentFile.getName().contains(".mp3"))) {
-				foundSongs.add(currentFile.getName());
+			if(currentFile.isFile()) {
+				if(currentFile.getName().contains(fileType)) {
+					String[] fileData = {currentFile.getName(),currentFile.getAbsolutePath()};
+					foundFiles.add(fileData);
+				}
 			}
-			//agregar recursividad en else
+			else {
+				ArrayList<String[]> innerFiles = this.findFiles(fileType, currentFile);
+				if(!innerFiles.isEmpty()) {
+					for(String[] fileData: innerFiles) {
+						foundFiles.add(fileData);
+					}
+				}
+			}
 		}
 		
-		return foundSongs;
+		return foundFiles;
+	}
+	
+	/** 
+	 * Metódo que busca archivos con una terminación específica
+	 * @param fileType Terminación del archivo a buscar.
+	 * @return Lista de archivos encontrados.
+	 * */
+	public ArrayList<String[]> findFiles(String fileType, File currentDirectory){
+		
+		ArrayList<String[]> foundFiles = new ArrayList<String[]>();
+		
+		File[] fileList = currentDirectory.listFiles();
+		
+		for(File currentFile: fileList) {
+			if(currentFile.isFile()) {
+				if(currentFile.getName().contains(fileType)) {
+					String[] fileData = {currentFile.getName(),currentFile.getAbsolutePath()};
+					foundFiles.add(fileData);
+				}
+			}
+			else {
+				ArrayList<String[]> innerFiles = this.findFiles(fileType, currentFile);
+				if(!innerFiles.isEmpty()) {
+					for(String[] fileData: innerFiles) {
+						foundFiles.add(fileData);
+					}
+				}
+			}
+		}
+		
+		return foundFiles;
 	}
 }

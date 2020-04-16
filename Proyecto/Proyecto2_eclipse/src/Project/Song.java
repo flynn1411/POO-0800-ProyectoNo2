@@ -25,11 +25,11 @@ public class Song {
 		this.location = location;
 	}
 	
-	public Song() {
-		this.title = "undefined";
-		this.album = "undefined";
-		this.author = "undefined";
-		this.location = "undefined";
+	public Song(String location) {
+		this.title = "unknown";
+		this.album = "unknown";
+		this.author = "unknown";
+		this.location = location;
 	}
 
 	/**
