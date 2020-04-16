@@ -4,12 +4,12 @@ Objetivos
 Primarios (lo que tenemos que hacer)
 -------------------------------------
 
-- Leer canciones dinamicamente
+- ~~Leer canciones dinamicamente desde Library~~
 - Conectar Python y Java/jsp (Sepala aún o si hay que hacer eso para empezar)
 - WebScraping (Obtener lyrics desde un html)
 - Usar API para obtener lyrics
 - Buscar por canción, artista y album al mismo tiempo
-- Guardar en un archivo zip las canciones que el usuario seleccione
+- **Guardar en un archivo zip las canciones que el usuario seleccione**
 - Poder controlar la canción mediante controles no nativos del html audio
 - Recordar todo lo que el usuario haya hecho al volver a entrar, esto mediante el uso de sesiones de JAVA
 
