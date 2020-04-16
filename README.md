@@ -23,3 +23,10 @@ Changelog
 -Busqueda por nombre,artista o album en tiempo real.
 -Seleccion de canciones para descargar.
 -Botones de navegacion de musica personalizados.
+
+
+*15/04/2020*
+------------
+
+- En src/Proyecto: FileManager, Song, Artwork, SongManager
+- WebContent/Testing/test.jsp
