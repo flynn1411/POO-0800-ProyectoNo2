@@ -54,11 +54,14 @@
         <div id="viewInfo">
             <img src="images/sleepwalking.jpg" id="albumImage">
             <h1 id="textCurrentSong">You are so cool - Jonathan Bree</h1>
-            <audio id="objSong" src="../song.mp3" controls></audio>
+            <audio id="objSong" src="Library/Pink Floyd__The Wall__The Thin Ice.mp3"></audio>
             <div id="controllers">
                 <img id="playIcon" src="images/play_icon.png" onclick="playOrPauseSong()">
                 <img id="nextIcon" src="images/next_icon.png" onclick="playNextSong()">
                 <img id="previousIcon" src="images/previous_icon.png" onclick="playBackSong()">
+                <span id="currentTime">0:00</span>
+                <progress id="progressBar"class="custom-progress" value="0" max="100"></progress>
+                <span id="duration">0:00</span>
             </div>
         </div>
         
@@ -92,22 +95,42 @@
             var temp = new ViewFunctions();
             temp.loadArtistsAndAlbums();
             function playSong(element){temp.playSong(element);}
-            function playOrPauseSong(){temp.playOrPauseSong();}
             function playNextSong(){temp.playNextSong();}
             function playBackSong(){temp.playBackSong();}
             function searchElement(){temp.searchElement();}
             function saveChangesToResults(){temp.saveChangesToResults();}
             function downloadElements(){temp.downloadElements();}
+            function playOrPauseSong(){
+                temp.playOrPauseSong();
+                window.setInterval("temp.timeOfSong()",1000);
+                var t;
+                if(objSong.paused == false){
+                    bar = setInterval(function(){progressBar.value = progressBar.value + 0.05;},50);    
+                }else{
+                    console.log("Detiene el intervalo")
+                    window.clearInterval(bar);
+                }
+            }
 
             var arrForDownload = [];
             document.addEventListener("click",function(e){
-                //console.log(typeof(e.target.className));
                 if(e.target.className.includes("inconstant") != true){
                     resultsToSearch.style.display = "none";
                     temp.saveChangesToResults();
                 }
             });
-
+                       
+            document.getElementById('progressBar').addEventListener('click', function (e) {
+                var x = e.pageX - this.offsetLeft,
+                clickedValue = x * this.max / this.offsetWidth-65;
+                var temp = parseInt(objSong.duration);
+                var porcentaje = parseInt(clickedValue).toString();
+                var newValue = porcentaje;    
+                var newTimeSong = temp*(parseFloat(newValue)/100)+7;
+                progressBar.value = clickedValue-1.5;
+                objSong.currentTime = newTimeSong;
+                objSong.play();
+            });
         </script>
     </body>
 </html>
