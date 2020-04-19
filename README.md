@@ -20,3 +20,12 @@ Changelog
 ----------------
 Funcion a los botones next y back para reproducir canciones.
 Cambio a la busqueda de canciones, antes mediante un json libreria creado al inicio... ahora mediante AJAX trayendo un json por cada busqueda.
+
+*18/04/2020*
+--------------
+-Barra de navegacion de progreso de la cancion agregada.
+-Actualizacion de album y nombre de cancion a mostrar actualizada con base al disco(temporal).
+-Correccion de errores a la hora de navegar en las canciones.
+-Correccion de posicion de los elementos del area central.
+-Barra de control de canciones personalizada.
+-----------SIN TEMAS AUN---------------
