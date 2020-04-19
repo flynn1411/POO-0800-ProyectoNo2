@@ -36,6 +36,7 @@ input#searchBox{
     left: 6%;
     width: 84%;
     height: auto;
+    font-size: 17px;
 }
 div#resultsToSearch{
     position: absolute;
@@ -48,7 +49,6 @@ div#resultsToSearch{
     z-index: 1;
     transition-property: top;
     transition-duration: 3s;
-
 }
 img#downloadIcon{
     left: 94%;
@@ -73,7 +73,6 @@ div#viewAlbumAndArtist{
     top: 1%;
     left: 4%;
     font-size: 25px;
-    font-family: 'Oswald', sans-serif;
     color: white;
 }
 div#artist{
@@ -112,13 +111,13 @@ td {
     min-width: 361px;
     height: 15%;
 }
+
 /* -------------------------- NAVEGADOR DE ALBUMES -------------------------- */
 #titleAlbum{
     position: absolute;
     top: 51%;
     left: 4%;
     font-size: 25px;
-    font-family: 'Oswald', sans-serif;
     color: white;
 }
 div#album{
@@ -130,44 +129,155 @@ div#album{
     background-color: #fff;
 }
 
-/* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
+/* ==========================> AREA DE VISUALIZACION DE INFORMACION DE LA CANCION <================================*/
 div#viewInfo{
     position: absolute;
-    width: 75%;
+    width: 50%;
     height: 90%;
     background-color: var(--bg-rightArea);
+    background: linear-gradient(to top left, #BF3838, #D07B7B, #EA1414);
     top: 10%;
     left: 25%;
-}
-img#albumImage{
-    position: absolute;
     display: inline-block;
+    text-align: center;
+}
+
+img#albumImage{
+    position: relative;
     width: 25%;
     height: auto;
-    top: 8%;
-    left: 22%;
 }
-#textCurrentSong{
-    position: absolute;
-    top: 55%;
-    left: 17%;
+span#nameCurrentSong{
+    position: relative;
+}
+span#artistCurrentSong{
+    position: relative;
 }
 audio{
     position: absolute;
     top: 92%;
     left: 0px;
     width: 67%;
-    background-color: red;
+    background:linear-gradient(to top left, #7D7575, #5E4949, #000000);
 }
 div#controllers{
     position: absolute;
-    top: 77%;
+    top: 83%;
     left: 0%;
-    width: 67%;
-    height: 15%;
-    background-color: black;
+    width: 100%;
+    height: 17%;
+    background:linear-gradient(to top left, #7D7575, #5E4949, #000000);
 }
-/* ==========================> AREA DE VISUALIZACION DE INFORMACION DE LA CANCION <================================*/
+
+/*---------------------BARRA DE CONTROL Y ELEMENTOS ADYACENTES--------------------------*/
+div#scrollBar {
+    width: 75%;
+    height: 10%;
+    background-color: black;
+    display: flex;
+    border-radius: 50px;
+    margin-left: 25px;
+    cursor: pointer;
+    top: 68%;
+    position: absolute;
+    left: 8%;
+}
+img#playIcon{
+    position: absolute;
+    top: 17%;
+    left: 46%;
+    width: 5%;
+    height: auto;
+}
+img#previousIcon{
+    position: absolute;
+    top: 26%;
+    left: 39%;
+    width: 2.5%;
+    height: auto;
+}
+img#nextIcon{
+    position: absolute;
+    top: 26%;
+    left: 55%;
+    width: 2.5%;
+    height: auto;
+}
+img#volumenIcon{
+    position: absolute;
+    top: 65%;
+    left: 94%;
+    width: 1.8%;
+    height: auto;
+}
+img#volumenIcon:hover{
+    -webkit-transform:scale(1.2);transform:scale(1.2);
+}
+
+span#currentTime{
+    position: absolute;
+    color: white;
+    font-size: 15px;
+    top: 65%;
+    left: 5%;
+}
+/*----------------- BARRA DESPLAZADORA DE PROGRESO------------*/
+input[type=range]{
+    position: absolute;
+    top: 62%;
+    width: 76%;
+    left: 10%;
+    -webkit-appearance: none;
+    background: transparent;
+}
+input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+  
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+  }
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background: red;
+    cursor: pointer;
+}
+  
+.custom-progress {
+    position: absolute;
+    top: 69%;
+    left: 11%;
+    width: 75%;
+    height: 5%;
+    border: none;
+    border-radius: 50px;
+}
+
+.custom-progress::-webkit-progress-bar {
+    border-radius: 20px;
+}
+
+.custom-progress::-moz-progress-bar {
+    border-radius: 5px;
+    background-color: #6f2591;
+}
+
+span#duration{
+    position: absolute;
+    color: white;
+    font-size: 15px;
+    top: 65%;
+    left: 88%;    
+}
+
+/* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
 div#viewLyric{
     position: absolute;
     width: 25%;
@@ -190,7 +300,6 @@ div#lyric{
 }
 p{
     font-size: 20px;
-    font-family: 'Baloo Bhaina 2', cursive;
     margin-left: 15px;
     margin-right: 15px;
 }
