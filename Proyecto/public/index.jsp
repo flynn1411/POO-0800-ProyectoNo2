@@ -11,8 +11,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/index.css">
         <link rel="shortcut icon" href="">
-        <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Indie+Flower&display=swap" rel="stylesheet">
 
     </head>
     
@@ -52,16 +50,19 @@
         
         <!--================ ELEMENTOS DEL AREA DE LIRICA ================-->
         <div id="viewInfo">
-            <img src="images/sleepwalking.jpg" id="albumImage">
-            <h1 id="textCurrentSong">You are so cool - Jonathan Bree</h1>
-            <audio id="objSong" src="Library/Pink Floyd__The Wall__The Thin Ice.mp3"></audio>
+            <img id="albumImage"><br>
+            <span id="nameCurrentSong" class="textInfo"></span><br>
+            <span id="artistCurrentSong"></span><br>
+            <audio id="objSong" src="Library/Pink Floyd__The Wall__The Thin Ice.mp3" preload="metadata"></audio>
             <div id="controllers">
                 <img id="playIcon" src="images/play_icon.png" onclick="playOrPauseSong()">
                 <img id="nextIcon" src="images/next_icon.png" onclick="playNextSong()">
                 <img id="previousIcon" src="images/previous_icon.png" onclick="playBackSong()">
                 <span id="currentTime">0:00</span>
-                <progress id="progressBar"class="custom-progress" value="0" max="100"></progress>
+                <progress id="progressBar"class="custom-progress" value="0"></progress>
+                <input id="inputProgressBar" type="range" min="0" max="100" onchange="changeProgressSong(this)">
                 <span id="duration">0:00</span>
+                <img id="volumenIcon" src="images/volumen_icon.png" onclick="muteSong()">
             </div>
         </div>
         
@@ -94,23 +95,15 @@
         <script>
             var temp = new ViewFunctions();
             temp.loadArtistsAndAlbums();
-            function playSong(element){temp.playSong(element);}
+            function playClickedSong(element){temp.playClickedSong(element);}
             function playNextSong(){temp.playNextSong();}
             function playBackSong(){temp.playBackSong();}
+            function muteSong(){temp.muteSong();}
+            function changeProgressSong(element){temp.changeProgressSong(element);}
             function searchElement(){temp.searchElement();}
             function saveChangesToResults(){temp.saveChangesToResults();}
             function downloadElements(){temp.downloadElements();}
-            function playOrPauseSong(){
-                temp.playOrPauseSong();
-                window.setInterval("temp.timeOfSong()",1000);
-                var t;
-                if(objSong.paused == false){
-                    bar = setInterval(function(){progressBar.value = progressBar.value + 0.05;},50);    
-                }else{
-                    console.log("Detiene el intervalo")
-                    window.clearInterval(bar);
-                }
-            }
+            function playOrPauseSong(){temp.playOrPauseSong();}
 
             var arrForDownload = [];
             document.addEventListener("click",function(e){
@@ -120,7 +113,7 @@
                 }
             });
                        
-            document.getElementById('progressBar').addEventListener('click', function (e) {
+            /* document.getElementById('progressBar').addEventListener('click', function (e) {
                 var x = e.pageX - this.offsetLeft,
                 clickedValue = x * this.max / this.offsetWidth-65;
                 var temp = parseInt(objSong.duration);
@@ -130,7 +123,7 @@
                 progressBar.value = clickedValue-1.5;
                 objSong.currentTime = newTimeSong;
                 objSong.play();
-            });
+            }); */
         </script>
     </body>
 </html>
