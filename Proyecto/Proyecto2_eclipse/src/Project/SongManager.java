@@ -92,7 +92,7 @@ public class SongManager {
 	 * */
 	private void addSong(String[] songData, String fileType) {
 		
-		if(songData[0].matches(String.format("[0-9a-zA-z!_\\-?]+__[0-9a-zA-z!_\\-?]+__[0-9a-zA-z!_\\-?]+.%s", fileType))) {
+		if(songData[0].matches(String.format("[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+.%s", fileType))) {
 			String[] songInfo = songData[0].split("__");
 			
 			this.songList.add(
@@ -116,7 +116,7 @@ public class SongManager {
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
 		
-		if(artworkData[0].matches(String.format("[0-9a-zA-z!_\\-?]+__[0-9a-zA-z!_\\-?]+.%s", fileType))) {
+		if(artworkData[0].matches(String.format("[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+.%s", fileType))) {
 			String[] artworkInfo = artworkData[0].split("__");
 			
 			this.artworkList.add(

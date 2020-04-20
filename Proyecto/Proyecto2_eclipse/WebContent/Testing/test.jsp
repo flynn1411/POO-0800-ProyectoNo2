@@ -6,19 +6,53 @@
     pageEncoding="ISO-8859-1"%><%
     
     SongManager songManager = new SongManager();
-    StringBuilder result = new StringBuilder("");
     
-    for(Song currentSong: songManager.getSongList()){
-    	result.append(
-    			String.format(
-    					"<b>Titulo:</b>%s &nbsp <b>Author:</b>%s &nbsp <b>Album:</b>%s &nbsp <b>Ruta:</b>%s<br><br>",
-    					currentSong.getTitle(),
-    					currentSong.getAuthor(),
-    					currentSong.getAlbum(),
-    					currentSong.getLocation()
-    					)
-    			);
+    if(request.getParameter("command") != null){
+    	
+    	if(
+    			request.getParameter("command").equals("retrieveSongs")
+    			){
+    		
+    		String result = "Empty";
+    		ArrayList<Song> songs = songManager.getSongList();
+    		
+    		if(!songs.isEmpty()){
+	    		StringBuilder newResult = new StringBuilder("[");
+    			int count = 0;
+	    		for(Song currentSong: songs){
+	    			newResult.append(String.format(
+	    					"{\"title\":\"%s\",\"author\":\"%s\",\"album\":\"%s\",\"path\":\"%s\"}",
+	    					currentSong.getTitle(),
+	    					currentSong.getAuthor(),
+	    					currentSong.getAlbum(),
+	    					currentSong.getLocation()
+	    					));
+	    			
+	    			if(count < songs.size()-1){
+	    				newResult.append(",");
+	    			}
+	    			count++;
+	    		}
+	    		
+	    	newResult.append("]");
+	    	
+	    	result = newResult.toString();
+    		}
+    	
+    		
+    		out.print(String.format(
+    				"{\"result\":%s}",
+    				result
+    				));
+    	}
+    	
+    	else{
+    		out.print("{\"result\":\"Unknown command\"}");
+    	}
+    	
+    }
+    else{
+    	out.print("{\"result\":\"Unknown parameter\"}");
     }
     
-    out.print(result.toString());
 %>
