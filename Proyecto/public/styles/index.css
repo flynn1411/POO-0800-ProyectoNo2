@@ -37,8 +37,10 @@ input#searchBox{
     width: 84%;
     height: auto;
     font-size: 17px;
+    font-family: 'Alegreya', serif;
 }
 div#resultsToSearch{
+    overflow:auto;
     position: absolute;
     top: 75%;
     display: none;
@@ -94,6 +96,7 @@ table{
     background-color: white;
     top:0;
     font-size: 17px;
+    font-family: 'Lusitana', serif;
     width: 100%;
     height: auto;
     border-collapse: collapse;
@@ -121,6 +124,7 @@ td {
     color: white;
 }
 div#album{
+    overflow:auto;
     position: absolute;
     width: 91%;
     height: 42%;
@@ -144,14 +148,21 @@ div#viewInfo{
 
 img#albumImage{
     position: relative;
-    width: 25%;
+    width: 40%;
+    top: 7%;
     height: auto;
 }
 span#nameCurrentSong{
     position: relative;
+    top: 13%;
+    font-size: 30px;
+    font-family: 'Kalam', cursive;
 }
 span#artistCurrentSong{
     position: relative;
+    font-size: 25px;
+    font-family: 'Kalam', cursive;
+    top: 15%;
 }
 audio{
     position: absolute;
@@ -182,26 +193,32 @@ div#scrollBar {
     position: absolute;
     left: 8%;
 }
-img#playIcon{
+.controllerIcon{
+    position:absolute;
+    height: auto;
+}
+.popupIcon{
+    display: none;
     position: absolute;
+    top: 23%;
+    left: 85%;
+    width: 10%;
+    height: auto;
+}
+img#playIcon{
     top: 17%;
     left: 46%;
     width: 5%;
-    height: auto;
 }
 img#previousIcon{
-    position: absolute;
     top: 26%;
     left: 39%;
     width: 2.5%;
-    height: auto;
 }
 img#nextIcon{
-    position: absolute;
     top: 26%;
     left: 55%;
     width: 2.5%;
-    height: auto;
 }
 img#volumenIcon{
     position: absolute;
@@ -210,7 +227,7 @@ img#volumenIcon{
     width: 1.8%;
     height: auto;
 }
-img#volumenIcon:hover{
+img:hover{
     -webkit-transform:scale(1.2);transform:scale(1.2);
 }
 
@@ -220,17 +237,18 @@ span#currentTime{
     font-size: 15px;
     top: 65%;
     left: 5%;
+    display: block;
 }
 /*----------------- BARRA DESPLAZADORA DE PROGRESO------------*/
-input[type=range]{
+input#inputProgressBar{
     position: absolute;
     top: 62%;
-    width: 76%;
+    width: 76.5%;
     left: 10%;
     -webkit-appearance: none;
     background: transparent;
 }
-input[type=range]::-ms-track {
+input#inputProgressBar::-ms-track {
     width: 100%;
     cursor: pointer;
     outline: none;
@@ -242,7 +260,7 @@ input[type=range]::-ms-track {
   }
 
 /* All the same stuff for Firefox */
-input[type=range]::-moz-range-thumb {
+input#inputProgressBar::-moz-range-thumb {
     width: 15px;
     height: 15px;
     border-radius: 15px;
@@ -276,7 +294,22 @@ span#duration{
     top: 65%;
     left: 88%;    
 }
-
+input#currentVolumeBar{
+    position: absolute;
+    top: 27%;
+    left: 91%;
+    width: 7%;
+    height: 3%;
+    transform: rotate(-90deg);
+    -webkit-appearance: none;
+}
+input#currentVolumeBar::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 15px;
+    background: blue;
+    cursor: pointer;
+}
 /* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
 div#viewLyric{
     position: absolute;
@@ -299,6 +332,7 @@ div#lyric{
     border-spacing: 5px;
 }
 p{
+    font-family: 'Vollkorn', serif;
     font-size: 20px;
     margin-left: 15px;
     margin-right: 15px;
@@ -309,10 +343,70 @@ p{
 @media screen and (max-width: 720px){
     div#viewInfo{
         background-color: green;
+        background: linear-gradient(to top left, #5744A5, #9989DB, #3403FF);
+        left: 0;
+        top: 10%;
+        width: 100%;
+        height: 90%;
     }
-    img#downloadIcon{
-        width: 6.5%;
-        height: 43px;
-        top:25%;
+    .icon{
+        width: 4%;
+        height: auto;
+        top: 30%;
+    }
+    input#searchBox{
+        font-size: 12px;
+    }
+    div#controllers{
+        left: 0%;
+        width: 100%;
+        top: 70%;
+        height: 30%;
+        z-index: 1;
+    }
+    .custom-progress{
+        width: 72.5%;
+        left: 14.5%;
+    }
+    input#inputProgressBar{
+        width: 73.5%;
+        left: 13%;
+    }
+    div#viewLyric{
+        display: none;
+        z-index: -1;
+    }
+    div#viewAlbumAndArtist{
+        display: none;
+    }
+    img#albumImage{
+    	width:55%;
+    	}
+    img#playIcon{
+        width: 15%;
+        left: 43%;
+    }
+    img#previousIcon{
+        width: 7%;
+        left: 24%;
+    }
+    img#nextIcon{
+        width: 7%;
+        left: 70%;
+    }
+    img#volumenIcon{
+        display: none;
+    }
+    .popupIcon{
+        display: inline-block;
+    }
+    img#albumListIcon{
+        left: 7%;
+    }
+    input#currentVolumeBar{
+        display: none;
+    }
+    p{
+        font-size: 8px;
     }
 }
