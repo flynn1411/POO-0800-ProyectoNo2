@@ -9,12 +9,15 @@ function ViewFunctions(){
         pathOfLibrary = "http://localhost:8080/Proyecto2_v0.5/public/Library/",             //Ruta temporal de la libreria.
         pathOfAlbums = "http://localhost:8080/Proyecto2_v0.5/public/Library/Albums/",       //Ruta temporal de los albumes.
         bar,
-        inputBar;                                                                                //Se guarda un setInterval de la barra de progreso.
+        progress,
+        inputBar,
+        stateSong = false,
+        finishedSong = false;                                                                                //Se guarda un setInterval de la barra de progreso.
     
     //------------------ Muestra los artistas y albumes y otros elementos iniciales en la pagina. -----------------
     this.loadArtistsAndAlbums = function(){
-        objSong.volume = 0;
-        volumenIcon.src = "images/volumen_icon2.png";
+        objSong.volume = 0.5;
+        //volumenIcon.src = "images/volumen_icon2.png";
         var htmlArtists = '<body>',
             htmlAlbums= '<body>';
             arrOfArtists = [],
@@ -104,27 +107,35 @@ function ViewFunctions(){
                 }
             };
         $.get(action,parameters,callback);
-    
+
     }
 
     //Reproduce la cancion clickeada en la tabla de busqueda.
     this.playClickedSong = function(element){
+        console.log("ENTRA AL CLICKED")
+        if(stateSong == false || objSong.paused == true){
+            this.functionInterval(2);
+            finishedSong = true;
+            stateSong = true;
+            this.playOrPauseSong();
+            this.changeIconStateSong();
+        }
+
         progressBar.value = 0;                                      //Se reinicia la barra de progreso.
         inputProgressBar.value = "0";
         let nameClickedSong = element.getAttribute('name'),
             songPath = `${pathOfLibrary}${nameClickedSong}`;
-        
+
+        console.log("Dentro del metadata",objSong.duration);
         objSong.src = songPath;
-        state = 1;
-        currentSong = nameClickedSong;
-        console.log("Dentro del Pause: ",objSong.duration);
-        this.changeCurrentStateSong();
-        this.updateInfo();
-        this.updateMaxProgress();
-        this.runTime();
-        //objSong.play();
+        objSong.play();            
         
-        console.log(`Reproduciendo ahora:${currentSong}`);
+        /* objSong.onloadedmetadata = function() {    
+            console.log("Dentro del metadata",objSong.duration);
+            objSong.src = songPath;
+            objSong.play();
+        } */
+        this.updateMaxProgress();
     }
     //------------ Descarga los elementos seleccionados en el checkbox ----------------
     this.downloadElements = function(){               
@@ -147,22 +158,22 @@ function ViewFunctions(){
 
     //Funcion para actualizar la informacion a mostrar de la cancion actual.
     this.updateInfo = function(){
-        console.log("Cancion Actual: ",currentSong);
+        //console.log("Cancion Actual: ",currentSong);
         var arrCurrentSong = currentSong.split('__');
         var fileAlbumName = `${arrCurrentSong[0]}_${arrCurrentSong[1]}`
         let state = false;
         let fileName;
         
+        //Utilizando Ajax para obtener y verificar si aun existe el archivo cancion.
         var action = "service.jsp";
         var parameters = {"command":"getJsonAlbums"};
         var callback = function(content){
             var jsonAlbumFile = JSON.parse(content.trim());
-            //console.log(jsonAlbumFile);
-        var arrAlbumLibrary = jsonAlbumFile.content;
+            var arrAlbumLibrary = jsonAlbumFile.content;
+    
             for(file in arrAlbumLibrary){
                 var currentFile = arrAlbumLibrary[file];
-                let path = currentFile.path;                                                             //Ruta en disco del archivo.
-                //console.log(path);
+                //let path = currentFile.path;                                                             //Ruta en disco del archivo.
                 fileName = `${currentFile.artist}_${currentFile.album}.jpg`; //Nombre del archivo.
                 if(fileName.toLowerCase().indexOf(fileAlbumName.toLowerCase()) != -1){                
                     state = true;
@@ -175,7 +186,7 @@ function ViewFunctions(){
                 console.log(`FAILE: NombreAlbum :${fileAlbumName} - NombreArchivo: ${fileName}\n\n`);
                 albumImage.src = `${pathOfAlbums}default.jpg`;
             }
-            nameCurrentSong.innerHTML = `${arrCurrentSong[2]}`;
+            nameCurrentSong.innerHTML = `${arrCurrentSong[2].slice(0,-4)}`;
             artistCurrentSong.innerHTML = `${arrCurrentSong[0]}`;
         }
         $.get(action,parameters,callback);
@@ -187,35 +198,51 @@ function ViewFunctions(){
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
     }
 
-
-    //========================= FUNCIONES PARA LAS ACCIONES DE LAS CANCIONES ============================
-    //Funcion al clickear una cancion buscada.
+    //========================= FUNCIONES PARA LAS ACCIONES DEL CONTROLADOR ============================
+    //Funcion al clickear el boton de play/pause.
     this.playOrPauseSong = function(){
         if(stateLoad == 0){
             objSong.src =`${pathOfLibrary}${songsList[0]}`;
             currentSong =  songsList[0];
             inputProgressBar.value = "0";
+    
             this.updateInfo();
             this.updateMaxProgress();
             stateLoad = 1;
+            stateSong = true;
         }
-        if(parseInt(inputProgressBar.value) == parseInt(inputProgressBar.max)){
-            inputProgressBar.value = "0";
+        //En caso que la cancion ya finalizo se reestablece los valores de progreso de cancion.
+        if(finishedSong == true){
             progressBar.value = 0;
-            objSong.currentTime = 0;
+            objSong.currentTime = 0;    
+            inputProgressBar.value = "0";
+            finishedSong = false;
+            stateSong = true;
         }
-        this.changeCurrentStateSong();
-        this.runTime();
-
+        //Si hay que reproducir la cancion.
+        if(stateSong == true){
+            objSong.play();
+            this.functionInterval(1);
+        }
+        //Si hay que pausar la cancion.
+        if(stateSong == false){
+            objSong.pause();
+            this.functionInterval(2);
+        }
+        //Cambia el valor entre pause/play.
+        if(stateSong==true){stateSong=false}else{stateSong=true};
+        this.changeIconStateSong();
     }
 
-    //Reproduce la cancion siguiente.
+    //Funcion al clickear el icono de cancion siguiente.
     this.playNextSong = function(){
         //Reproduce automaticamente en caso que haya estado pausado en la cancion anterior.
-        if(state == 1){
-            playIcon.src = "images/pause_icon.png";
-            objSong.play();
-            state = 0;
+        if(stateSong == false || objSong.paused == true){
+            this.functionInterval(2);
+            finishedSong = true;
+            stateSong = true;
+            this.playOrPauseSong();
+            this.changeIconStateSong();
         }
 
         let indexCurrentSong = songsList.indexOf(currentSong);
@@ -236,14 +263,16 @@ function ViewFunctions(){
 
     }
 
-    //Reproducir la cancion anterior.
+    //Funcion al clickear el icono de cancion anterior.
     this.playBackSong = function(){
-        if(state == 1){
-            playIcon.src = "images/pause_icon.png";
-            objSong.play();
-            state = 0;
+        if(stateSong == false || objSong.paused == true){
+            this.functionInterval(2);
+            finishedSong = true;
+            stateSong = true;
+            this.playOrPauseSong();
+            this.changeIconStateSong();
         }
-        
+
         let indexCurrentSong = songsList.indexOf(currentSong);
         progressBar.value = 0;
         inputProgressBar.value = "0"; 
@@ -253,72 +282,56 @@ function ViewFunctions(){
             objSong.play();
             currentSong = songsList[indexCurrentSong-1];
         }else{
-            //console.log("-----Igual a 0---------");
             objSong.src = `${pathOfLibrary}${songsList[songsList.length-1]}`;
             objSong.play();
             currentSong = songsList[songsList.length-1];
         }
-        //console.log(`Reproduciendo: ${currentSong} - ${songsList.indexOf(currentSong)}\n\n`);
         this.updateInfo();
         this.updateMaxProgress();
     }
 
+    //Funcion que permite cambiar el volumen de la cancion con la input[range].
+    this.changeValueVolume = function(element){
+        var newVolume = parseInt(element.value)/100;
+        objSong.volume = newVolume;
+        console.log("NEW VOLUMEN: ",objSong.volume);
+        volumeSave = newVolume;
+
+        if(newVolume == 0){
+            volumenIcon.src = "images/volumen_icon2.png";
+        }else{
+            volumenIcon.src = "images/volumen_icon.png";
+        }
+
+    }
+
     //Funcion para mutear un cancion al hacer click en el icono de volumen.
     this.muteSong = function(){
-        console.log("Silenciado");
         if(objSong.volume != 0){
             volumeSave = objSong.volume;
             objSong.volume = 0; 
             volumenIcon.src = "images/volumen_icon2.png";
+            currentVolumeBar.value = "0";
         }else{
             if(volumeSave == 0){
                 volumeSave = 0.5;
             }
             objSong.volume = volumeSave;
             volumenIcon.src = "images/volumen_icon.png";
+            currentVolumeBar.value = (volumeSave*100).toString();
         }
-    }
-
-    //Cambia el estado de una cancion entre pausada/reproduciendo el cambio incluye el icono.
-    this.changeCurrentStateSong = function(){
-        if(state == 0){
-            playIcon.src = "images/play_icon.png";
-            objSong.pause();
-        }
-        if(state == 1){
-            playIcon.src = "images/pause_icon.png";
-            objSong.play();
-        }
-
-        if(state==0){state=1}else{state=0};
-    }
-
-    //Obtiene el tiempo que ha transcurrido la cancion para mostrarla en la barra de controles.
-    this.timeOfSong = function(){
-        if(objSong.paused == false){
-            currentTime.innerHTML = this.transformTime(parseInt(objSong.currentTime));
-            duration.innerHTML = this.transformTime(parseInt(objSong.duration)); 
-        }
-    }
-
-    //Va cambiando el relleno de la barra de progreso acorde a la cancion.
-    this.changeProgressBar = function(){ 
-        progressBar.value = progressBar.value + 0.05;
     }
     
-    //Va cambiando el relleno del input[range] de; progreso acorde a la cancion.
-    this.changeInputProgressBar = function(){
-        console.log(`Progreso actual: ${inputProgressBar.value} - MAX: ${inputProgressBar.max}`);
-        if(parseInt(inputProgressBar.value) < parseInt(inputProgressBar.max)){
-            var tempTime = parseFloat(inputProgressBar.value) + 1;
-            inputProgressBar.value = tempTime.toString();
-        }else{
-            this.changeCurrentStateSong();
-            this.runTime();
+    //Cambia un icono dependiendo del estado play/pause de la cancion.
+    this.changeIconStateSong = function(){
+        if(objSong.paused == true){
+            playIcon.src = "images/play_icon.png";
         }
-        console.log("Progress Point: ",inputProgressBar.value);
+        if(objSong.paused == false){
+            playIcon.src = "images/pause_icon.png";
+        }        
     }
-
+    
     //Transforma segundos a formato [min]:[seg]. 
     this.transformTime = function(seconds){
         var minute = Math.floor((seconds / 60) % 60);
@@ -328,35 +341,48 @@ function ViewFunctions(){
             second = (second < 10)? '0' + second : second;
             return minute + ':' + second;
     }
-
-    //Funcion que permite reaundar o detener el tiempo de la cancion y la barra de progreso.
-    this.runTime = function(){
-        let progress = setInterval("temp.timeOfSong()",1000);
-        
+    
+    //Obtiene el tiempo que ha transcurrido la cancion para mostrarla en la barra de controles.
+    this.timeOfSong = function(){
         if(objSong.paused == false){
-                    clearInterval(bar);
-                    bar = setInterval("temp.changeProgressBar()",50);
-                    inputBar = setInterval("temp.changeInputProgressBar()",1000);
-                }else{
-                    console.log("Detiene el intervalo")
-                    clearInterval(progress);
-                    clearInterval(bar);
-                    clearInterval(inputBar);
-                }
+            currentTime.innerHTML = this.transformTime(parseInt(objSong.currentTime));
+            duration.innerHTML = this.transformTime(parseInt(objSong.duration)); 
+        }
+        if(objSong.currentTime == objSong.duration && 
+            parseInt(inputProgressBar.value) == parseInt(inputProgressBar.max)){
+            
+            //------- CUANDO LA CANCION HA FINALIZADO ----------
+            console.log('-----Cancion Finalizada------');
+            currentTime.innerHTML = this.transformTime(parseInt(objSong.currentTime));
+            finishedSong = true;
+            objSong.pause();
+            stateSong = false;
+            this.functionInterval(2);
+            this.changeIconStateSong();
+        }
     }
-
+    
+    //Actualiza el maximo de la barra de progreso.
     this.updateMaxProgress = function(){
         objSong.onloadedmetadata = function() {
             //au.duration;
             //console.log("Dentro UPDATE: ",objSong.duration);
             progressBar.max = objSong.duration.toString();
             inputProgressBar.max = objSong.duration.toString();
-            console.log("----------------------------");
-            console.log("MaxDuration: ",objSong.duration);
-            console.log("MaxInputBar :",inputProgressBar.max);
-            console.log("MaxProgressBar :",progressBar.max);
-            console.log("----------------------------");
         };
+    }
+    //Va cambiando el relleno de la barra de progreso acorde a la cancion.
+    this.changeProgressBar = function(){ 
+        progressBar.value = progressBar.value + 0.05;
+    }
+    
+    //Va cambiando el valor del input[range] del progreso acorde a la cancion.
+    this.changeInputProgressBar = function(){
+        //console.log(`Progreso actual: ${inputProgressBar.value} - MAX: ${inputProgressBar.max}`);
+        if(parseInt(inputProgressBar.value) < parseInt(inputProgressBar.max)){
+            var tempTime = parseFloat(inputProgressBar.value) + 1;
+            inputProgressBar.value = tempTime.toString();
+        }
     }
 
     //Lee el cambio realizado a la barra de progreso.
@@ -364,4 +390,18 @@ function ViewFunctions(){
         progressBar.value = parseInt(element.value);
         objSong.currentTime = parseInt(element.value);
     }
+
+    //Establece o limpia la ejecucion de funciones con intervalos.
+    this.functionInterval = function(option){
+        if(option == 1){
+            progress = setInterval("temp.timeOfSong()",1000);
+            bar = setInterval("temp.changeProgressBar()",50);
+            inputBar = setInterval("temp.changeInputProgressBar()",1000);
+        }
+        if(option == 2){
+            clearInterval(bar);
+            clearInterval(progress);
+            clearInterval(inputBar);
+        }
+    }    
 }    
