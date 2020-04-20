@@ -115,8 +115,8 @@ public class SongManager {
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
 		
-		if(artworkData[0].matches(String.format("[0-9a-zA-z!_\\-?]+__[0-9a-zA-z!_\\-?]+.%s", fileType))) {
-			String[] artworkInfo = artworkData[0].split("__");
+		if(artworkData[0].matches(String.format("[0-9a-zA-z\\s!_\\-?]+_[0-9a-zA-z\\s!_\\-?]+.%s", fileType))) {
+			String[] artworkInfo = artworkData[0].split("_");
 			
 			this.artworkList.add(
 					new Artwork(
