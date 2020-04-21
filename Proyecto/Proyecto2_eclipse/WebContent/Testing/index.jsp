@@ -7,35 +7,10 @@
 		<title>Prueba de Canciones</title>
 		
 		<script src="../public/scripts/jquery.js"></script>
+		<script src="index.js"></script>
 	</head>
 	<body onload="loadData();">
-		<script type="text/javascript">
-			function loadData(){
-				$.post("test.jsp", {"command":"retrieveSongs"}, function(content){
-					//console.log(content);
-					var json = JSON.parse(content.replace(/\\/g,"\\\\"));
-					
-					var songs = json.result;
-					
-					tableInner = ``;
-					
-					for(song in songs){
-						let currentSong = songs[song]; 
-						tableInner += `<tr><td>\${currentSong.title}</td><td>\${currentSong.author}</td><td>\${currentSong.album}</td></tr>`;
-					}
-					console.log(tableInner);
-					songInfo.innerHTML = tableInner;
-					
-					song = songs[1];
-					title.innerHTML = song.title;
-					author.innerHTML = song.author;
-					album.innerHTML = song.album;
-					objSong.src=`file:///\${song.path}`;
-				});
-				
-				
-			}
-		</script>
+	
 		<div id="songContainer">
 			<h2 id="title">Song Title</h2><br>
 			<h3 id="author">Author</h3><br>

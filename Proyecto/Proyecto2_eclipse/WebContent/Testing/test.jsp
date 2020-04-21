@@ -13,37 +13,36 @@
     			request.getParameter("command").equals("retrieveSongs")
     			){
     		
-    		String result = "Empty";
-    		ArrayList<Song> songs = songManager.getSongList();
-    		
-    		if(!songs.isEmpty()){
-	    		StringBuilder newResult = new StringBuilder("[");
-    			int count = 0;
-	    		for(Song currentSong: songs){
-	    			newResult.append(String.format(
-	    					"{\"title\":\"%s\",\"author\":\"%s\",\"album\":\"%s\",\"path\":\"%s\"}",
-	    					currentSong.getTitle(),
-	    					currentSong.getAuthor(),
-	    					currentSong.getAlbum(),
-	    					currentSong.getLocation()
-	    					));
-	    			
-	    			if(count < songs.size()-1){
-	    				newResult.append(",");
-	    			}
-	    			count++;
-	    		}
-	    		
-	    	newResult.append("]");
-	    	
-	    	result = newResult.toString();
-    		}
-    	
+    		String result = songManager.getSongsAsJSON();
     		
     		out.print(String.format(
     				"{\"result\":%s}",
     				result
     				));
+    	}
+    	
+    	else if(
+    			request.getParameter("command").equals("getSong") &&
+    			request.getParameter("title") != null &&
+    			request.getParameter("author") != null &&
+    			request.getParameter("album") != null
+    			){
+    		
+    		byte[] file = songManager.getSongAsBytes(
+    				request.getParameter("title").toString(),
+    				request.getParameter("author").toString(),
+    				request.getParameter("album").toString()
+    				);
+    		
+    		if (file != null){
+    			System.out.println(file);
+    			out.print(String.format(
+    					"{\"status\":\"success\", \"data\": %s}",
+    					file
+    					));
+    		}else{
+    			out.print("{\"status\":\"failure\"}");
+    		}
     	}
     	
     	else{

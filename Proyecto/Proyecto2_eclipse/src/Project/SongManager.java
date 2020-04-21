@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Clase que se encarga de manejar las canciones y archivos de arte de album.
- * @version 0.1.0
+ * @version 0.1.1
  * */
 public class SongManager {
 	
@@ -16,20 +16,6 @@ public class SongManager {
 	
 	/**Lector de archivos*/
 	private FileManager fm;
-
-	/**
-	 * @return the songList
-	 */
-	public ArrayList<Song> getSongList() {
-		return songList;
-	}
-
-	/**
-	 * @return the artworkList
-	 */
-	public ArrayList<Artwork> getArtworkList() {
-		return artworkList;
-	}
 	
 	/*Constructor**/
 	public SongManager() {
@@ -92,7 +78,7 @@ public class SongManager {
 	 * */
 	private void addSong(String[] songData, String fileType) {
 		
-		if(songData[0].matches(String.format("[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+.%s", fileType))) {
+		if(songData[0].matches(String.format("[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+.%s", fileType))) {
 			String[] songInfo = songData[0].split("__");
 			
 			this.songList.add(
@@ -116,7 +102,7 @@ public class SongManager {
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
 		
-		if(artworkData[0].matches(String.format("[0-9a-zA-z!_\\s\\-?]+__[0-9a-zA-z!_\\s\\-?]+.%s", fileType))) {
+		if(artworkData[0].matches(String.format("[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+.%s", fileType))) {
 			String[] artworkInfo = artworkData[0].split("__");
 			
 			this.artworkList.add(
@@ -127,5 +113,90 @@ public class SongManager {
 							)
 					);
 		}
+	}
+	
+	/**
+	 * Metódo que convierte el ArrayList de Song a una cadena JSON.
+	 * @return json
+	 * */
+	public String getSongsAsJSON() {
+		StringBuilder json = new StringBuilder("{\"songs\":[");
+		
+		if(!this.songList.isEmpty()) {
+			int count = 0;
+    		for(Song currentSong: this.songList){
+    			json.append(String.format(
+    					"{\"title\":\"%s\",\"author\":\"%s\",\"album\":\"%s\"}",
+    					currentSong.getTitle(),
+    					currentSong.getAuthor(),
+    					currentSong.getAlbum()
+    					//currentSong.getLocation() /**,\"path\":\"%s\"**/
+    					));
+    			
+    			if(count < this.songList.size()-1){
+    				json.append(",");
+    			}
+    			count++;
+    		}
+		}
+		
+		return json.append("]}").toString();
+	}
+	
+	/**
+	 * Metódo que convierte el ArrayList de Artwork a una cadena JSON.
+	 * @return json
+	 * */
+	public String getArtworksAsJSON() {
+		StringBuilder json = new StringBuilder("{\"artworks\":[");
+		
+		if(!this.songList.isEmpty()) {
+			int count = 0;
+    		for(Artwork currentArtwork: this.artworkList){
+    			json.append(String.format(
+    					"{\"author\":\"%s\",\"album\":\"%s\"}",
+    					currentArtwork.getAuthor(),
+    					currentArtwork.getAlbum()
+    					/**currentArtwork.getLocation()**/ /**,\"path\":\"%s\"**/
+    					));
+    			
+    			if(count < this.artworkList.size()-1){
+    				json.append(",");
+    			}
+    			count++;
+    		}
+		}
+		
+		return json.append("]}").toString();
+	}
+	
+	/**
+	 * Metódo que retorna una canción como un arreglo de bytes.
+	 * @param songTitle Titulo de la cancion
+	 * @param songAuthor Autor de la canción
+	 * @param songAlbum Album de la cancion
+	 * @return file Archivo como arreglo de bytes
+	 * */
+	public byte[] getSongAsBytes(String songTitle, String songAuthor, String songAlbum) {
+		byte[] file = null;
+		
+		Song foundSong = null;
+		
+		for(Song currentSong: this.songList) {
+			if(
+					currentSong.getTitle().equals(songTitle) &&
+					currentSong.getAuthor().equals(songAuthor) &&
+					currentSong.getAlbum().equals(songAlbum)
+					) {
+				foundSong = currentSong;
+				break;
+			}
+		}
+		
+		if(foundSong != null) {
+			file = fm.getFileAsBytes(foundSong.getLocation());
+		}
+		
+		return file;
 	}
 }

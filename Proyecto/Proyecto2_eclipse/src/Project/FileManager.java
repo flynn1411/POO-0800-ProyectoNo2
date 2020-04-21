@@ -1,6 +1,7 @@
 package Project;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -101,5 +102,28 @@ public class FileManager {
 		}
 		
 		return foundFiles;
+	}
+	
+	/**
+	 * Metódo que transforma un archivo a un arreglo de bytes para un mejor pase de su información.
+	 * @param path Ruta del archivo
+	 * @return array Arreglo de bytes 
+	 * */
+	public byte[] getFileAsBytes(String path) {
+		File file = new File(path);
+		byte[] array = new byte[(int) file.length()];
+		
+		if(file.exists()) {
+			try {
+				FileInputStream fis = new FileInputStream(file);
+				fis.read(array);
+				fis.close();
+			}
+			catch(Exception e) {
+				System.out.println(e);
+			}
+		}
+		
+		return array;
 	}
 }
