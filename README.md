@@ -31,3 +31,9 @@ Cambio a la busqueda de canciones, antes mediante un json libreria creado al ini
 - Barra de control de canciones personalizada.
 
 -----------SIN TEMAS AUN---------------
+
+*21/04/2020*
+-------------
+
+-Comprimir archivos mp3 con python3 ejecutados desde un .sh con java.
+-Generando un .sh con los comandos para copiar las canciones elegidas por el usuario.
