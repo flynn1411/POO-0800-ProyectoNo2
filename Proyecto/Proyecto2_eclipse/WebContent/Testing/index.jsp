@@ -15,7 +15,7 @@
 			<h2 id="title">Song Title</h2><br>
 			<h3 id="author">Author</h3><br>
 			<h3 id="album">Album</h3><br>
-			<audio id="objSong" src="../public/Library/Fazerdaze__Morningside__Lucky Girl.mp3" preload="metadata"></audio>
+			<audio id="objSong" src="../public/Library/Fazerdaze__Morningside__Lucky Girl.mp3" preload="metadata" controls></audio>
 		</div>
 		<div id="listContainer">
 			<table id="songTable" border="1">

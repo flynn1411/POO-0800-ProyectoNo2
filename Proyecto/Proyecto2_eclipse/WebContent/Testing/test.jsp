@@ -1,6 +1,7 @@
 <%@page import="Project.Song"%>
 <%@page import="Project.SongManager"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Base64"%>
 <%@page import="Project.FileManager"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%><%
@@ -35,10 +36,11 @@
     				);
     		
     		if (file != null){
-    			System.out.println(file);
+    			String encoded = Base64.getEncoder().encodeToString(file);
+    			//System.out.println(file);
     			out.print(String.format(
-    					"{\"status\":\"success\", \"data\": %s}",
-    					file
+    					"%s",
+    					encoded
     					));
     		}else{
     			out.print("{\"status\":\"failure\"}");

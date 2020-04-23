@@ -23,7 +23,7 @@ public class FileManager {
 	}
 	
 	/**
-	 * Método para obtener la dirección del archivo presente.
+	 * Mï¿½todo para obtener la direcciï¿½n del archivo presente.
 	 * @param String fileName Nombre del archivo
 	 * @return filePath
 	 * */
@@ -42,8 +42,8 @@ public class FileManager {
 	}
 	
 	/** 
-	 * Metódo que busca archivos con una terminación específica
-	 * @param fileType Terminación del archivo a buscar.
+	 * Metï¿½do que busca archivos con una terminaciï¿½n especï¿½fica
+	 * @param fileType Terminaciï¿½n del archivo a buscar.
 	 * @return Lista de archivos encontrados.
 	 * */
 	public ArrayList<String[]> findFiles(String fileType) {
@@ -51,20 +51,23 @@ public class FileManager {
 		
 		ArrayList<String[]> foundFiles = new ArrayList<String[]>();
 		
-		File[] fileList = currentDirectory.listFiles();
-		
-		for(File currentFile: fileList) {
-			if(currentFile.isFile()) {
-				if(currentFile.getName().contains(fileType)) {
-					String[] fileData = {currentFile.getName(),currentFile.getAbsolutePath()};
-					foundFiles.add(fileData);
-				}
-			}
-			else {
-				ArrayList<String[]> innerFiles = this.findFiles(fileType, currentFile);
-				if(!innerFiles.isEmpty()) {
-					for(String[] fileData: innerFiles) {
+		if(currentDirectory.exists()) {
+			
+			File[] fileList = currentDirectory.listFiles();
+			
+			for(File currentFile: fileList) {
+				if(currentFile.isFile()) {
+					if(currentFile.getName().contains(fileType)) {
+						String[] fileData = {currentFile.getName(),currentFile.getAbsolutePath()};
 						foundFiles.add(fileData);
+					}
+				}
+				else {
+					ArrayList<String[]> innerFiles = this.findFiles(fileType, currentFile);
+					if(!innerFiles.isEmpty()) {
+						for(String[] fileData: innerFiles) {
+							foundFiles.add(fileData);
+						}
 					}
 				}
 			}
@@ -74,8 +77,8 @@ public class FileManager {
 	}
 	
 	/** 
-	 * Metódo que busca archivos con una terminación específica
-	 * @param fileType Terminación del archivo a buscar.
+	 * Metï¿½do que busca archivos con una terminaciï¿½n especï¿½fica
+	 * @param fileType Terminaciï¿½n del archivo a buscar.
 	 * @return Lista de archivos encontrados.
 	 * */
 	public ArrayList<String[]> findFiles(String fileType, File currentDirectory){
@@ -105,7 +108,7 @@ public class FileManager {
 	}
 	
 	/**
-	 * Metódo que transforma un archivo a un arreglo de bytes para un mejor pase de su información.
+	 * Metï¿½do que transforma un archivo a un arreglo de bytes para un mejor pase de su informaciï¿½n.
 	 * @param path Ruta del archivo
 	 * @return array Arreglo de bytes 
 	 * */
