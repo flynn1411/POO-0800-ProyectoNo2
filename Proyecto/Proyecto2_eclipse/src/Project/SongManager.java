@@ -25,7 +25,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metódo privado que carga las canciones y las agrega a la lista.
+	 * Metï¿½do privado que carga las canciones y las agrega a la lista.
 	 * */
 	private void loadSongs() {
 		ArrayList<String[]> mp3List = this.fm.findFiles(".mp3");
@@ -45,7 +45,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metódo privado que carga el arte de canciones y los agrega a la lista.
+	 * Metï¿½do privado que carga el arte de canciones y los agrega a la lista.
 	 * */
 	private void loadArtwork() {
 		ArrayList<String[]> jpgList = this.fm.findFiles("jpg");
@@ -73,7 +73,7 @@ public class SongManager {
 	}
 	
 	/**
-	 *Metódo que crea canciones y las agrega a la lista.
+	 *Metï¿½do que crea canciones y las agrega a la lista.
 	 *@param songData Los datos de la cancion a cargar.
 	 * */
 	private void addSong(String[] songData, String fileType) {
@@ -97,7 +97,7 @@ public class SongManager {
 	
 	
 	/**
-	 *Metódo que crea objetos Artwork y los agrega a la lista.
+	 *Metï¿½do que crea objetos Artwork y los agrega a la lista.
 	 *@param artworkData Los datos del objeto ArtWork a crear.
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
@@ -116,7 +116,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metódo que convierte el ArrayList de Song a una cadena JSON.
+	 * Metï¿½do que convierte el ArrayList de Song a una cadena JSON.
 	 * @return json
 	 * */
 	public String getSongsAsJSON() {
@@ -144,7 +144,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metódo que convierte el ArrayList de Artwork a una cadena JSON.
+	 * Metï¿½do que convierte el ArrayList de Artwork a una cadena JSON.
 	 * @return json
 	 * */
 	public String getArtworksAsJSON() {
@@ -171,32 +171,104 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metódo que retorna una canción como un arreglo de bytes.
-	 * @param songTitle Titulo de la cancion
-	 * @param songAuthor Autor de la canción
-	 * @param songAlbum Album de la cancion
-	 * @return file Archivo como arreglo de bytes
+	 * MÃ©todo que sirve para encontrar una canciÃ³n y devolver el objeto Song.
+	 * @param title Titulo de la canciÃ³n
+	 * @param author Autor de la canciÃ³n
+	 * @param album AlbÃºm de la canciÃ³n
+	 * @return foundSong Objeto Song
 	 * */
-	public byte[] getSongAsBytes(String songTitle, String songAuthor, String songAlbum) {
-		byte[] file = null;
-		
-		Song foundSong = null;
+	private Song getCurrentSong(String title, String author, String album) {
+		Song  foundSong = null;
 		
 		for(Song currentSong: this.songList) {
 			if(
-					currentSong.getTitle().equals(songTitle) &&
-					currentSong.getAuthor().equals(songAuthor) &&
-					currentSong.getAlbum().equals(songAlbum)
+					currentSong.getTitle().equals(title) &&
+					currentSong.getAuthor().equals(author) &&
+					currentSong.getAlbum().equals(album)
 					) {
 				foundSong = currentSong;
 				break;
 			}
 		}
 		
-		if(foundSong != null) {
-			file = fm.getFileAsBytes(foundSong.getLocation());
+		return foundSong;
+	}
+	
+	/**
+	 * MÃ©todo que sirve para encontrar un arte de albÃºm y devolver el objeto Artwork.
+	 * @param author Autor de la canciÃ³n
+	 * @param album AlbÃºm de la canciÃ³n
+	 * @return foundSong Objeto Song
+	 * */
+	private Artwork getCurrentArtwork(String author, String album) {
+		Artwork  foundArtwork = null;
+		
+		for(Artwork currentArtwork: this.artworkList) {
+			if(
+					currentArtwork.getAuthor().equals(author) &&
+					currentArtwork.getAlbum().equals(album)
+					) {
+				foundArtwork = currentArtwork;
+				break;
+			}
 		}
 		
-		return file;
+		return foundArtwork;
+	}
+	
+	public String setCurrentSong(String title, String author, String album) {
+		boolean songExists = true;
+		boolean artworkExists = true;
+		String status = "success";
+		
+		Song song = this.getCurrentSong(title, author, album);
+		Artwork artwork = this.getCurrentArtwork(author, album);
+		
+		
+		if(song != null) {
+			String fileType = ".mp3";
+			if(song.getLocation().contains(".ogg")) {
+				fileType = ".ogg";
+			}
+			
+			this.fm.makeCopy(
+					song.getLocation(),
+					String.format(
+							"%s__%s__%s%s",
+							song.getAuthor(),
+							song.getAlbum(),
+							song.getTitle(),
+							fileType
+							));
+				
+			
+			if(artwork == null) {
+				artworkExists = false;
+				
+			}else {
+				String imageType = ".png";
+				
+				if(artwork.getLocation().contains(".jpg")) {
+					imageType = ".jgp";
+				}else if(artwork.getLocation().contains(".jpeg")) {
+					imageType = ".jpeg";
+				}
+				
+				this.fm.makeCopy(
+						artwork.getLocation(),
+						String.format(
+								"%s__%s%s",
+								artwork.getAuthor(),
+								artwork.getAlbum(),
+								imageType
+								)
+						);
+			}
+		
+		}else {
+			songExists = false;
+		}
+		
+		return "";
 	}
 }
