@@ -64,7 +64,7 @@ public class SongManager {
 			}	
 		}
 		
-		if(!jpgList.isEmpty()) {
+		if(!pngList.isEmpty()) {
 			for(String[] artworkData: pngList) {
 				this.addArtwork(artworkData, ".png");
 			}	
@@ -216,36 +216,39 @@ public class SongManager {
 		return foundArtwork;
 	}
 	
+	/**
+	 * Método que mueve la canción deseada a la carpeta webapps/ROOT/CurrentSong
+	 * */
 	public String setCurrentSong(String title, String author, String album) {
-		boolean songExists = true;
-		boolean artworkExists = true;
-		String status = "success";
+		//this.fm.deleteCurrentSong();
+		
+		String status = "Failure";
+		String songFile = "Not Found";
+		String artworkFile = "Not Found";
 		
 		Song song = this.getCurrentSong(title, author, album);
 		Artwork artwork = this.getCurrentArtwork(author, album);
 		
 		
 		if(song != null) {
+			status = "Success";
 			String fileType = ".mp3";
 			if(song.getLocation().contains(".ogg")) {
 				fileType = ".ogg";
 			}
 			
-			this.fm.makeCopy(
-					song.getLocation(),
-					String.format(
-							"%s__%s__%s%s",
-							song.getAuthor(),
-							song.getAlbum(),
-							song.getTitle(),
-							fileType
-							));
+			songFile = String.format(
+					"%s__%s__%s%s",
+					song.getAuthor(),
+					song.getAlbum(),
+					song.getTitle(),
+					fileType
+					);
+			
+			this.fm.makeCopy(song.getLocation(), songFile);
 				
 			
-			if(artwork == null) {
-				artworkExists = false;
-				
-			}else {
+			if(artwork != null) {
 				String imageType = ".png";
 				
 				if(artwork.getLocation().contains(".jpg")) {
@@ -254,21 +257,23 @@ public class SongManager {
 					imageType = ".jpeg";
 				}
 				
-				this.fm.makeCopy(
-						artwork.getLocation(),
-						String.format(
-								"%s__%s%s",
-								artwork.getAuthor(),
-								artwork.getAlbum(),
-								imageType
-								)
+				artworkFile = String.format(
+						"%s__%s%s",
+						artwork.getAuthor(),
+						artwork.getAlbum(),
+						imageType
 						);
+				
+				this.fm.makeCopy(artwork.getLocation(), artworkFile);
 			}
 		
-		}else {
-			songExists = false;
 		}
 		
-		return "";
+		return String.format(
+				"{\"status\":\"%s\",\"songFile\":\"%s\",\"artworkFile\":\"%s\"}",
+				status,
+				songFile,
+				artworkFile
+				);
 	}
 }

@@ -1,4 +1,5 @@
 function ViewFunctions(){
+    
     //Variables inicializadas en un valor para determinar si una funcion se ejecuta por primera vez o no.
     var state = 1;
         stateLoad = 0;
@@ -6,8 +7,8 @@ function ViewFunctions(){
     var volumeSave = 0,                                                                     //Guarda el volumen al mutearse.
         songsList = [],                                                                     //Guarda los nombres de los archivos de las canciones.
         currentSong,                                                          //Guarda la cancion reproduciendo actualmente.
-        pathOfLibrary = "Library/",             //Ruta temporal de la libreria.
-        pathOfAlbums = "Library/Albums/",       //Ruta temporal de los albumes.
+        pathOfCurrentSong = "http://localhost:8080/CurrentSong",
+        pathOfAlbums = "http://localhost:8080/Proyecto2_v0.5/public/Library/Albums/",       //Ruta temporal de los albumes.
         bar,
         progress,
         inputBar,
@@ -23,26 +24,24 @@ function ViewFunctions(){
             arrOfArtists = [],
             arrOfAlbums = [];
 
-        var action = "controllers/service.jsp",
-            parameters = {"command":"getJsonSongs"},
+        var action = "controllers/retrieveSongs.jsp",
+            parameters = {"command":"retrieveSongs"},
             callback = function(content){
-        		console.log(content);
                 var jsonSongFile = JSON.parse(content),    
-                    arrLibrary2 = jsonSongFile.content;
-
+                    arrLibrary2 = jsonSongFile.result.songs;
+        
                 for(let inf in arrLibrary2){
                     let current = arrLibrary2[inf];
-                    let fileName = `${current.artist}__${current.album}__${current.name}.mp3`;
+                    let fileName = `${current.author}__${current.album}__${current.title}.mp3`;
                     songsList.push(fileName);
 
-                    if(arrOfArtists.includes(current.artist) == false){
-                        arrOfArtists.push(current.artist);
+                    if(arrOfArtists.includes(current.author) == false){
+                        arrOfArtists.push(current.author);
                     }
                     if(arrOfAlbums.includes(current.album) == false){
                         arrOfAlbums.push(current.album);
                     }
                 } 
-
                 //Se agregan los albumes y artistas al html correspondiente.
                 for(let artist in arrOfArtists){
                     htmlArtists += `<tr><td>${arrOfArtists[artist]}</td></tr>`;
@@ -58,10 +57,10 @@ function ViewFunctions(){
                 //Se agregar el html al contenido del objeto tabla.
                 contentArtists.innerHTML = htmlArtists;
                 contentAlbums.innerHTML = htmlAlbums;
-                objSong.src =`${pathOfLibrary}${songsList[0]}`;
             };
-        $.post(action,parameters,callback);
-        //console.log(songsList);   
+            console.log(action);
+        $.get(action,parameters,callback);
+        console.log(songsList);   
     }
 
     //----------------- Cargas las coincidencias de la libreria con el texto ingresado por el usuario. ---------
@@ -76,102 +75,86 @@ function ViewFunctions(){
             resultsToSearch.style.display = "none";
         }
         
-        var action = "controllers/service.jsp";
-            parameters = {"command":"getJsonSongs"};
+        var action = "controllers/retrieveSongs.jsp";
+        console.log(action);
+            parameters = {"command":"retrieveSongs"};
             callback = function(content){
                 var jsonSongFile = JSON.parse(content);
-                var arrLibrary2 = jsonSongFile.content;
+                var arrLibrary2 = jsonSongFile.result.songs;
 
                 //Recorre los elementos de un arreglo con las canciones de la libreria para agregarlas a la tabla de resultados.
                 for(i in arrLibrary2){
-                    let fileName = `${arrLibrary2[i].artist}__${arrLibrary2[i].album}__${arrLibrary2[i].name}.mp3`, //Nombre del archivo.
-                        inf = `${arrLibrary2[i].name} ${arrLibrary2[i].artist} ${arrLibrary2[i].album}`;  
+                    let fileName = `${arrLibrary2[i].author}__${arrLibrary2[i].album}__${arrLibrary2[i].title}.mp3`, //Nombre del archivo.
+                        inf = `${arrLibrary2[i].title} ${arrLibrary2[i].author} ${arrLibrary2[i].album}`;  
                         inf = inf.toLowerCase();
 
                     if(inf.indexOf(enteredText) != -1 && enteredText !=""){
-                        html_ += `<tr><td class="inconstant" onclick="playClickedSong(this)" name="${fileName}"><input type="checkbox" value=${i} class="inconstant checked">${arrLibrary2[i].artist} - ${arrLibrary2[i].name}</td></tr>`;    
+                        html_ += `<tr><td class="inconstant" onclick="playClickedSong(this)" name="${fileName}"><input type="checkbox" value=${i} class="inconstant checked" onclick="temp.saveChangesToResults()">${arrLibrary2[i].author} - ${arrLibrary2[i].title}</td></tr>`;    
                     }
-
                 }
-                
                 html_ += '</body>';
                 tableOfResults.innerHTML = html_;
 
                 //Recorre toda la tabla para marcar los elementos que ya han sido seleccionados por el usuario.
                 for(i=0; i<tableOfResults.rows.length; i++){
-                    let valueToRow = tableOfResults.rows[i].getElementsByTagName('td')[0].innerHTML.slice(60),
+                    let valueToRow = tableOfResults.rows[i].getElementsByTagName('td')[0].getAttribute('name'),
                         checkedElement = document.getElementsByClassName("checked");
                     
+                    console.log("ARREGLO A DESCARGAR: ",arrForDownload);
+                    console.log("ELEMENTO A COMPARAR: ",valueToRow);
                     if(arrForDownload.includes(valueToRow)){
                         checkedElement[i].checked = 1;
                     }
                 }
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             };
         $.get(action,parameters,callback);
 
     }
 
-    //Reproduce la cancion clickeada en la tabla de busqueda.
-    this.playClickedSong = function(element){
-        console.log("ENTRA AL CLICKED")
-        if(stateSong == false || objSong.paused == true){
-            this.functionInterval(2);
-            finishedSong = true;
-            stateSong = true;
-            this.playOrPauseSong();
-            this.changeIconStateSong();
-        }
-
-        progressBar.value = 0;                                      //Se reinicia la barra de progreso.
-        inputProgressBar.value = "0";
-        let nameClickedSong = element.getAttribute('name'),
-            songPath = `Library/${nameClickedSong}`;
-        console.log(nameClickedSong);
-        console.log(songPath);
-
-        console.log("Dentro del metadata",objSong.duration);
-        objSong.src = songPath;
-        objSong.play();            
-        
-        /* objSong.onloadedmetadata = function() {    
-            console.log("Dentro del metadata",objSong.duration);
-            objSong.src = songPath;
-            objSong.play();
-        } */
-        this.updateMaxProgress();
-    }
     //------------ Descarga los elementos seleccionados en el checkbox ----------------
     this.downloadElements = function(){               
-        /* console.log(array); */
         console.log(arrForDownload);
+        var action = "controllers/service.jsp";
+                var parameters = {"command":"addToSession","option":"2"};
+                var callback = function(content){
+                    //console.log(content);
+                }
+                $.post(action,parameters,callback);
     }
 
     //Llamada para salvar todos los cambios o resultados mostrados en el area de busqueda.
     this.saveChangesToResults = function(){
+        console.log("ENTRA PARA SALVAR LA CANCION");   
         var checkedElement = document.getElementsByClassName("checked");
         for(i in checkedElement){
             if(checkedElement[i].checked == true){
-                let nameToElement = tableOfResults.rows[i].getElementsByTagName('td')[0].innerHTML.slice(60);
+                console.log("CAMBIO AGREGADO PARA LA SESION");
+                let nameToElement = tableOfResults.rows[i].getElementsByTagName('td')[0].getAttribute('name');
                 if(arrForDownload.includes(nameToElement) != true){
                     arrForDownload.push(nameToElement);
                 }
+                var action = "controllers/service.jsp";
+                var parameters = {"command":"addToSession","option":"1","fileName":nameToElement};
+                var callback = function(content){
+                    console.log(content);
+                }
+                $.post(action,parameters,callback);
             }
         }
     }
 
     //Funcion para actualizar la informacion a mostrar de la cancion actual.
     this.updateInfo = function(){
-        //console.log("Cancion Actual: ",currentSong);
         var arrCurrentSong = currentSong.split('__');
         var fileAlbumName = `${arrCurrentSong[0]}_${arrCurrentSong[1]}`
         let state = false;
         let fileName;
         
         //Utilizando Ajax para obtener y verificar si aun existe el archivo cancion.
-        var action = "controllers/service.jsp";
+        var action = "controllers/retrieveSongs.jsp";
         var parameters = {"command":"getJsonAlbums"};
         var callback = function(content){
-        	console.log(content);
             var jsonAlbumFile = JSON.parse(content.trim());
             var arrAlbumLibrary = jsonAlbumFile.content;
     
@@ -187,7 +170,7 @@ function ViewFunctions(){
             if(state == true){
                 albumImage.src = `${pathOfAlbums}${fileName}`;
             }else{
-                console.log(`FAILE: NombreAlbum :${fileAlbumName} - NombreArchivo: ${fileName}\n\n`);
+                //console.log(`FAILE: NombreAlbum :${fileAlbumName} - NombreArchivo: ${fileName}\n\n`);
                 albumImage.src = `${pathOfAlbums}default.jpg`;
             }
             nameCurrentSong.innerHTML = `${arrCurrentSong[2].slice(0,-4)}`;
@@ -197,23 +180,36 @@ function ViewFunctions(){
         
     }
 
-    //Capitaliza un texto.
-    this.capitalize = function(text) {
-        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    //========================= FUNCIONES PARA LAS ACCIONES DE LOS CONTROLES ============================
+    //Reproduce la cancion clickeada en la tabla de busqueda.
+    this.playClickedSong = function(element){
+        //console.log("ENTRA AL CLICKED")
+        if(stateSong == false || objSong.paused == true){
+            this.functionInterval(2);
+            finishedSong = true;
+            stateSong = true;
+            this.playOrPauseSong();
+            this.changeIconStateSong();
+        }
+
+        let nameClickedSong = element.getAttribute('name');
+        this.updateNewCurrentSong(nameClickedSong);
+        this.updateInfo();
+        this.updateMaxProgress();
     }
 
-    //========================= FUNCIONES PARA LAS ACCIONES DEL CONTROLADOR ============================
     //Funcion al clickear el boton de play/pause.
     this.playOrPauseSong = function(){
         if(stateLoad == 0){
-            objSong.src =`${pathOfLibrary}${songsList[0]}`;
+            //objSong.src =`${pathOfLibrary}${songsList[0]}`;
             currentSong =  songsList[0];
-            inputProgressBar.value = "0";
-    
+            //let values = this.getValues(currentSong);
+            this.updateNewCurrentSong(currentSong);
+            
+            //this.changeIconStateSong();
             this.updateInfo();
             this.updateMaxProgress();
             stateLoad = 1;
-            stateSong = true;
         }
         //En caso que la cancion ya finalizo se reestablece los valores de progreso de cancion.
         if(finishedSong == true){
@@ -250,21 +246,19 @@ function ViewFunctions(){
         }
 
         let indexCurrentSong = songsList.indexOf(currentSong);
-        progressBar.value = 0;
-        inputProgressBar.value = "0";
+        console.log("Reproduciendo ahora: ",songsList[indexCurrentSong+1]);
+        let indexToNewCurrentSong; 
+        
         if(indexCurrentSong != songsList.length-1){
-            objSong.src = `${pathOfLibrary}${songsList[indexCurrentSong+1]}`;
-            currentSong = songsList[indexCurrentSong+1];
-            this.updateMaxProgress();
-            objSong.play();
+            indexToNewCurrentSong = indexCurrentSong + 1; 
         }else{
-            objSong.src = `${pathOfLibrary}${songsList[0]}`;
-            objSong.play();
-            currentSong = songsList[0];
-            this.updateMaxProgress();
+            indexToNewCurrentSong = 0;
         }
-        this.updateInfo();
 
+        //let values = this.getValues();
+        this.updateNewCurrentSong(songsList[indexToNewCurrentSong]);
+        this.updateInfo();
+        this.updateMaxProgress();
     }
 
     //Funcion al clickear el icono de cancion anterior.
@@ -278,35 +272,18 @@ function ViewFunctions(){
         }
 
         let indexCurrentSong = songsList.indexOf(currentSong);
-        progressBar.value = 0;
-        inputProgressBar.value = "0"; 
+        let indexToNewCurrentSong;
 
         if(indexCurrentSong != 0){
-            objSong.src = `${pathOfLibrary}${songsList[indexCurrentSong-1]}`;
-            objSong.play();
-            currentSong = songsList[indexCurrentSong-1];
+            indexToNewCurrentSong = indexCurrentSong-1;
         }else{
-            objSong.src = `${pathOfLibrary}${songsList[songsList.length-1]}`;
-            objSong.play();
-            currentSong = songsList[songsList.length-1];
+            indexToNewCurrentSong = songsList.length-1;
         }
+
+        //let values = this.getValues();
+        this.updateNewCurrentSong(songsList[indexToNewCurrentSong]);
         this.updateInfo();
         this.updateMaxProgress();
-    }
-
-    //Funcion que permite cambiar el volumen de la cancion con la input[range].
-    this.changeValueVolume = function(element){
-        var newVolume = parseInt(element.value)/100;
-        objSong.volume = newVolume;
-        console.log("NEW VOLUMEN: ",objSong.volume);
-        volumeSave = newVolume;
-
-        if(newVolume == 0){
-            volumenIcon.src = "images/volumen_icon2.png";
-        }else{
-            volumenIcon.src = "images/volumen_icon.png";
-        }
-
     }
 
     //Funcion para mutear un cancion al hacer click en el icono de volumen.
@@ -324,6 +301,23 @@ function ViewFunctions(){
             volumenIcon.src = "images/volumen_icon.png";
             currentVolumeBar.value = (volumeSave*100).toString();
         }
+    }
+    
+//============================= FIN DE ACCIONES DE LOS CONTROLES =================================
+
+    //Funcion que permite cambiar el volumen de la cancion con la input[range].
+    this.changeValueVolume = function(element){
+        var newVolume = parseInt(element.value)/100;
+        objSong.volume = newVolume;
+        console.log("NEW VOLUMEN: ",objSong.volume);
+        volumeSave = newVolume;
+
+        if(newVolume == 0){
+            volumenIcon.src = "images/volumen_icon2.png";
+        }else{
+            volumenIcon.src = "images/volumen_icon.png";
+        }
+
     }
     
     //Cambia un icono dependiendo del estado play/pause de la cancion.
@@ -382,7 +376,6 @@ function ViewFunctions(){
     
     //Va cambiando el valor del input[range] del progreso acorde a la cancion.
     this.changeInputProgressBar = function(){
-        //console.log(`Progreso actual: ${inputProgressBar.value} - MAX: ${inputProgressBar.max}`);
         if(parseInt(inputProgressBar.value) < parseInt(inputProgressBar.max)){
             var tempTime = parseFloat(inputProgressBar.value) + 1;
             inputProgressBar.value = tempTime.toString();
@@ -407,5 +400,46 @@ function ViewFunctions(){
             clearInterval(progress);
             clearInterval(inputBar);
         }
-    }    
+    }
+    
+    //Funcion que extraer un archivo local y lo convierte a blub luego lo crea en objeto URL.
+    this.updateNewCurrentSong = function(fileName){
+        let values = this.getValues(fileName);
+        let title = values[0];
+        let author = values[1];
+        let album = values[2];
+        var action = "controllers/setCurrentSong.jsp";
+        var parameters = {"command":"setCurrentSong","title":title,"author":author,"album":album};
+        var callback = function(content){
+        	console.log(content);
+        	let result = JSON.parse(content.trim());
+        	
+        	if(result.status === "Success"){
+        		objSong.src= `${pathOfCurrentSong}/${result.songFile}`;
+        		objSong.play();
+        		albumImage.src = `${pathOfCurrentSong}/${result.artworkFile}`;
+        			progressBar.value = 0;
+        		inputProgressBar.value = "0";
+        		stateSong = true;
+        	}
+            
+        }
+
+        $.post(action,parameters,callback);
+    }
+
+    //Separa y extrae los valores de un nombre de archivo con formato Artista_Album_Nombre.mp3.
+    this.getValues = function(fileName){
+        let tempValue = fileName.split('__');
+        let title = tempValue[2].split(".mp3")[0];
+        let album = tempValue[1];
+        let author = tempValue[0];
+        currentSong = fileName;
+        return [title,author,album];
+    }
+
+    //Capitaliza un texto.
+    this.capitalize = function(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+    }
 }    
