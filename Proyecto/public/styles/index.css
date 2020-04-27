@@ -1,6 +1,11 @@
 @charset "UTF-8";
 /*==============================> TEMAS <======================================*/
+body{
+    background-color: var(--bg-topLine);
+}
+
 .default{
+    --bg-topLine: #272727;
     --bg-upperArea :#343057;
     --bg-leftArea :#BB5E5E;
     --bg-rightArea :#AE3434;
@@ -14,49 +19,67 @@
 }
 
 /* ============================> AREA DE BUSQUEDA <============================*/
-div#head{
+.topIcon{
     position: absolute;
-    width: 100%;
-    height: 10%;
-    background-color: var(--bg-upperArea);
+    width: 2%;
+    height: auto;
+    background: transparent;
+    cursor: pointer;
+    top: 20%;
+}
+.searchArea{
+    position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 7%;
+    display: flex;
+    justify-content: center;
 }
-.icon{
-    position: absolute;
-    display: inline-block;
-    width: 3%;
-    height: 70%;
-    top: 10%;
+
+i{
+    background-color: #2c3e50;
+    width: 50%;
+    line-height: 50px;
+    color: white;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    font-family: tahoma;
+    transition: 0.5s;
+    text-align: center;
 }
-input#searchBox{
-    position: absolute;
-    display: inline-block;
-    top: 29%;
-    left: 6%;
-    width: 84%;
-    height: auto;
-    font-size: 17px;
-    font-family: 'Alegreya', serif;
+
+.searchArea .tbox,
+.searchArea .btn{
+    border: none;
+    outline: none;
+    font-family: tahoma;
+    transition: 0.5s;
 }
+
+.searchArea .tbox{
+    width: 0;
+    font-size: 15px;
+    font-family: tahoma;
+    background: linear-gradient(to top left, #BF3838, #D07B7B, #EA1414);
+}
+
+.searchArea:hover > .tbox{
+    width: 100%;
+    background: white;
+}
+
 div#resultsToSearch{
-    overflow:auto;
+    overflow: auto;
     position: absolute;
-    top: 75%;
+    top: 100%;
     display: none;
-    left: 6%;
-    width: 85.1%;
+    left: 25%;
+    width: 50.04%;
     height: 320%;
     background-color: azure;
     z-index: 1;
-    transition-property: top;
-    transition-duration: 3s;
-}
-img#downloadIcon{
-    left: 94%;
-}
-img#homeIcon{
-    left: 1%;
 }
 
 /* ============================> AREA DE LISTADO DE ARTISTA - ALBUM <============================*/
@@ -87,8 +110,8 @@ div#artist{
     background-color: white;
 }
 table#tableOfResults td{
-    min-width: 1360px;
-    height: 15%;
+    min-width: 600px;
+    width: 800px;
 }
 table{
     position: absolute;
@@ -310,6 +333,27 @@ input#currentVolumeBar::-moz-range-thumb {
     background: blue;
     cursor: pointer;
 }
+/*================================ NAVEGADOR RESPONSIVO =========================*/
+.checkbtn{
+    color: white;
+    cursor: pointer;
+    display: none;
+}
+.icono{
+    width: 10%;
+    position: absolute;
+    top: 79%;
+    left: 6%;
+    display: none;
+    z-index: 1;
+}
+#check{
+    display: none;
+}
+#check2{
+    display: none;
+}
+/*=======================================================================================*/
 /* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
 div#viewLyric{
     position: absolute;
@@ -319,7 +363,7 @@ div#viewLyric{
     top: 10%;
     left: 75%;
 }
-div#lyric{
+.lyric{
     position: absolute;
     text-align: center;
     justify-content: center;
@@ -330,6 +374,9 @@ div#lyric{
     width: 91%;
     height: 89%;
     border-spacing: 5px;
+}
+div#responsiveLyric{
+    display: none;
 }
 p{
     font-family: 'Vollkorn', serif;
@@ -407,6 +454,44 @@ p{
         display: none;
     }
     p{
-        font-size: 8px;
+        font-size: 15px;
+    }
+    .checkbtn{
+        display: inline-block;
+    }
+    ul{
+        width: 94%;
+        height: 72%;
+        background: #55BB6A;
+        top: -3%;
+        left: -120%;
+        text-align: center;
+        transition: all .5s;
+        position: absolute;
+        display: none;
+    }
+    ul#ulLyric{
+        left: 100%;
+        background: #EA1414;
+    }
+    #check:checked ~ ul{
+        display: block;
+        left: 0;
+    }
+    
+    #check2:checked ~ ul#ulLyric{
+    	display:flex;
+    	transition: all .5s;
+        left: 0;
+    }
+
+    .icono{
+        display: inline-block;
+    }
+    img#iconLyric{
+        left: 85%;
+    }
+    div#responsiveLyric{
+        display: inline-block;
     }
 }
