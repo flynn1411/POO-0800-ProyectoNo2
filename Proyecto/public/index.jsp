@@ -5,8 +5,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Pagina principal</title>
-        <script src="script/index.js"></script>
-        <script src="script/jquery.js"></script>
+        <script src="scripts/index.js"></script>
+        <script src="scripts/jquery.js"></script>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/index.css">
@@ -16,16 +16,19 @@
     
     <!------- CUERPO DE LA PAGINA CON UN TEMA POR DEFECTO----------->
     <body class="default">
-
         <!--================ ELEMENTOS DEL AREA SUPERIOR ================-->
-        <div id="head">
-            <img src="images/home_icon3.png" id="homeIcon" class="icon">
-            <input id="searchBox" class="inconstant" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="searchElement()" onclick="saveChangesToResults()">
+        <div class="searchArea" onmouseleave="display()">
+            <i class="btn">
+                <img src="images/home_icon3.png" class="topIcon">
+            </i>    
+            <input id="searchBox" class="inconstant tbox" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="searchElement()">
             <div id="resultsToSearch" class="inconstant">
                 <table id="tableOfResults" class="inconstant">
                 </table>
             </div>
-            <img src="images/download_icon2.png" id="downloadIcon" class="icon" onclick="downloadElements()">
+            <i class="btn">
+                <img src="images/download_icon2.png" class="topIcon" onclick="downloadElements()">
+            </i>
         </div>
 
 
@@ -45,19 +48,17 @@
                 <table id="contentAlbums" class="tableContent">
                 </table>
             </div>
-        
+            
         </div>
         
-        <!--================ ELEMENTOS DEL AREA DE LIRICA ================-->
+        <!--================ ELEMENTOS DEL AREA DE INFORMACION DE CANCION ================-->
         <div id="viewInfo">
-            
-            <img id="albumImage" src="Library/Albums/Pink Floyd_The Wall.jpg"><br>
-            <span id="nameCurrentSong" class="textInfo">Young Lust</span><br>
-            <span id="artistCurrentSong">Pink Floyd</span>
-            <audio id="objSong" src="Library/Pink Floyd__The Wall__The Thin Ice.mp3" preload="metadata"></audio>
+            <img id="albumImage"><br>
+            <span id="nameCurrentSong" class="textInfo"></span><br>
+            <span id="artistCurrentSong"></span>
+            <audio id="objSong" preload="metadata"></audio>
             <div id="controllers">
-                <img id="albumListIcon" src="images/albumList_icon.png" class="popupIcon" onclick="viewListAlbumArtist()">
-                <img id="lyricIcon" src="images/lyric_icon.png" class="popupIcon" onclick="viewLyrics()">
+                <!-- class="checkbtn" id="icono" -->
                 <img id="playIcon" src="images/play_icon.png" class="controllerIcon" onclick="playOrPauseSong()">
                 <img id="nextIcon" src="images/next_icon.png" class="controllerIcon" onclick="playNextSong()">
                 <img id="previousIcon" src="images/previous_icon.png" class="controllerIcon" onclick="playBackSong()">
@@ -69,11 +70,52 @@
                 <input id="currentVolumeBar" min="0" max="100" value="100" type="range" onchange="changeValueVolume(this)">
                 
             </div>
+            <!-- Navegador izquierdo que muestra los artistas y albumes responsivo-->
+            <nav>
+                <input type="checkbox" id="check">
+                <label for="check" class="checkbtn">
+                    <!-- <img src="albumList_icon.png" class="checkbtn" id="icono"> -->
+                    <img src="images/albumList_icon.png" class="checkbtn icono">
+                </label>
+                <ul>
+                </ul>
+            </nav>
+            
+            <nav>
+                <input type="checkbox" id="check2">
+                <label for="check2" class="checkbtn">
+                    <img src="images/lyric_icon.png" class="checkbtn icono" id="iconLyric">
+                </label>
+                <ul id="ulLyric">
+                    <div class="lyric" id="responsiveLyric"><p>Body so fit
+                        So full of spark
+                        With affirmations
+                        As your wall art
+                        You were driven
+                        Eyes on the prize
+                        A yoga routine
+                        Home exercise
+                        <br><br>
+                        Now like the faded star
+                        In sunset blvd
+                        I play the devoted butler
+                        Morning coffees by the bed
+                        While all hard fought endeavours
+                        Bring in diminished returns
+                        You’re so cool, it’s true
+                        You’re my kind of girl
+                        Keep you ’til the end
+                        <br><br>
+                        Find solace in the privilege to pursue
+                        Most people are crushed into servitude</p>
+                    </div>
+                </ul>
+            </nav>
         </div>
         
-        <!--================ ELEMENTOS DEL AREA DE INFORMACION DE CANCION ================-->
+        <!--================ ELEMENTOS DEL AREA DE LIRICA ================-->
         <div id="viewLyric">
-            <div id="lyric"><p>Body so fit
+            <div class="lyric"><p>Body so fit
                 So full of spark
                 With affirmations
                 As your wall art
@@ -95,10 +137,10 @@
                 Find solace in the privilege to pursue
                 Most people are crushed into servitude</p></div>
         </div>
-
-
+        
         <script>
             var temp = new ViewFunctions();
+            temp.loadArtistsAndAlbums();
             function playClickedSong(element){temp.playClickedSong(element);}
             function playNextSong(){temp.playNextSong();}
             function playBackSong(){temp.playBackSong();}
@@ -111,29 +153,20 @@
             function changeValueVolume(element){temp.changeValueVolume(element);}
             
             var arrForDownload = [];
+            
+            function display(){resultsToSearch.style.display = "none";}
+            
             document.addEventListener("click",function(e){
                 if(e.target.className.includes("inconstant") != true){
                     resultsToSearch.style.display = "none";
-                    temp.saveChangesToResults();
                 }
             });
-            temp.loadArtistsAndAlbums();
-/*             objSong.ontimeupdate = function(){
-                if(parseInt(objSong.currentTime) == parseInt(objSong.duration)){
-                    console.log("HA FINALIZADO LA CANCION!!!!!!!!!!!!");
-                }
-            } */
-            /* document.getElementById('progressBar').addEventListener('click', function (e) {
-                var x = e.pageX - this.offsetLeft,
-                clickedValue = x * this.max / this.offsetWidth-65;
-                var temp = parseInt(objSong.duration);
-                var porcentaje = parseInt(clickedValue).toString();
-                var newValue = porcentaje;    
-                var newTimeSong = temp*(parseFloat(newValue)/100)+7;
-                progressBar.value = clickedValue-1.5;
-                objSong.currentTime = newTimeSong;
-                objSong.play();
-            }); */
+
+            objSong.ontimeupdate = function() {temp.timeOfSong()};
+            objSong.onended = function() {temp.changeIconStateSong();};
+            objSong.onpause = function() {temp.changeIconStateSong();}
+            objSong.onplay = function() {temp.changeIconStateSong();}
+
         </script>
     </body>
 </html>
