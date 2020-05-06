@@ -17,14 +17,18 @@
     <!------- CUERPO DE LA PAGINA CON UN TEMA POR DEFECTO----------->
     <body class="default">
         <!--================ ELEMENTOS DEL AREA SUPERIOR ================-->
-        <div id="head">
-            <img src="images/home_icon3.png" id="homeIcon" class="icon">
-            <input id="searchBox" class="inconstant" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="searchElement()">
+        <div class="searchArea" onmouseleave="display()">
+            <i class="btn">
+                <img src="images/home_icon3.png" class="topIcon">
+            </i>    
+            <input id="searchBox" class="inconstant tbox" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="searchElement()">
             <div id="resultsToSearch" class="inconstant">
                 <table id="tableOfResults" class="inconstant">
                 </table>
             </div>
-            <img src="images/download_icon2.png" id="downloadIcon" class="icon" onclick="downloadElements()">
+            <i class="btn">
+                <img src="images/download_icon2.png" class="topIcon" onclick="downloadElements()">
+            </i>
         </div>
 
 
@@ -83,27 +87,7 @@
                     <img src="images/lyric_icon.png" class="checkbtn icono" id="iconLyric">
                 </label>
                 <ul id="ulLyric">
-                    <div class="lyric" id="responsiveLyric"><p>Body so fit
-                        So full of spark
-                        With affirmations
-                        As your wall art
-                        You were driven
-                        Eyes on the prize
-                        A yoga routine
-                        Home exercise
-                        <br><br>
-                        Now like the faded star
-                        In sunset blvd
-                        I play the devoted butler
-                        Morning coffees by the bed
-                        While all hard fought endeavours
-                        Bring in diminished returns
-                        You’re so cool, it’s true
-                        You’re my kind of girl
-                        Keep you ’til the end
-                        <br><br>
-                        Find solace in the privilege to pursue
-                        Most people are crushed into servitude</p>
+                    <div class="lyric" id="responsiveLyric"><p id="currentLyricR"></p>
                     </div>
                 </ul>
             </nav>
@@ -111,33 +95,12 @@
         
         <!--================ ELEMENTOS DEL AREA DE LIRICA ================-->
         <div id="viewLyric">
-            <div class="lyric"><p>Body so fit
-                So full of spark
-                With affirmations
-                As your wall art
-                You were driven
-                Eyes on the prize
-                A yoga routine
-                Home exercise
-                <br><br>
-                Now like the faded star
-                In sunset blvd
-                I play the devoted butler
-                Morning coffees by the bed
-                While all hard fought endeavours
-                Bring in diminished returns
-                You’re so cool, it’s true
-                You’re my kind of girl
-                Keep you ’til the end
-                <br><br>
-                Find solace in the privilege to pursue
-                Most people are crushed into servitude</p></div>
+            <div class="lyric"><p id="currentLyric"></p></div>
         </div>
-
-
         
         <script>
             var temp = new ViewFunctions();
+            temp.loadArtistsAndAlbums();
             function playClickedSong(element){temp.playClickedSong(element);}
             function playNextSong(){temp.playNextSong();}
             function playBackSong(){temp.playBackSong();}
@@ -150,29 +113,20 @@
             function changeValueVolume(element){temp.changeValueVolume(element);}
             
             var arrForDownload = [];
+            
+            function display(){resultsToSearch.style.display = "none";}
+            
             document.addEventListener("click",function(e){
                 if(e.target.className.includes("inconstant") != true){
                     resultsToSearch.style.display = "none";
-                    //temp.saveChangesToResults();
                 }
             });
-            temp.loadArtistsAndAlbums();
-/*             objSong.ontimeupdate = function(){
-                if(parseInt(objSong.currentTime) == parseInt(objSong.duration)){
-                    console.log("HA FINALIZADO LA CANCION!!!!!!!!!!!!");
-                }
-            } */
-            /* document.getElementById('progressBar').addEventListener('click', function (e) {
-                var x = e.pageX - this.offsetLeft,
-                clickedValue = x * this.max / this.offsetWidth-65;
-                var temp = parseInt(objSong.duration);
-                var porcentaje = parseInt(clickedValue).toString();
-                var newValue = porcentaje;    
-                var newTimeSong = temp*(parseFloat(newValue)/100)+7;
-                progressBar.value = clickedValue-1.5;
-                objSong.currentTime = newTimeSong;
-                objSong.play();
-            }); */
+
+            objSong.ontimeupdate = function() {temp.timeOfSong()};
+            objSong.onended = function() {temp.changeIconStateSong();};
+            objSong.onpause = function() {temp.changeIconStateSong();}
+            objSong.onplay = function() {temp.changeIconStateSong();}
+
         </script>
     </body>
 </html>

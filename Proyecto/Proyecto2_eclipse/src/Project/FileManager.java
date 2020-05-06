@@ -1,9 +1,10 @@
 package Project;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
@@ -180,4 +181,55 @@ public class FileManager {
 		
 		return this.byteArray2File(byteArray, String.format("%s/webapps/ROOT/CurrentSong", tomcatPath), fileName);
 	}
+	
+	/**
+	 * Método que elimina el directorio CurrentSong
+	 * */
+	public void deleteCurrentSong() {
+		String tomcatPath = this.getRootDirectory();
+		File currentSongDir = new File(String.format("%s/webapps/ROOT/CurrentSong", tomcatPath));
+		
+		if(currentSongDir.exists()) {
+			File[] fileList = currentSongDir.listFiles();
+			
+			for(File currentFile: fileList) {
+				currentFile.delete();
+			}
+		}
+	}
+	
+	/**
+	 * Metodo para leer el archivo de un texto
+	 * @param String lyricsFile es el archivo a leer
+	 * @return el texto de archivo
+	 */
+	public String read(String lyricsFile){
+		
+		String text = "";
+		try {
+			//Obtenemos el archivo donde se encuentra nuestra lyrics
+			BufferedReader bf = new BufferedReader(new FileReader(lyricsFile));
+			String temp = "";
+			String bfReader;
+			//Leemos el contenido del arhicov .txt
+			while((bfReader = bf.readLine())!=null)temp = temp + bfReader;
+			
+			text = temp;
+			bf.close();
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return text;
+	}
+	/**
+	 * Metodo para eliminar el archivo de un texto
+	 * @param String fileName es el archivo a eliminar
+	 */
+	public void delete(String fileName){
+		File f = new File(String.format("%s",fileName));
+		f.delete();
+	}
+	
 }

@@ -25,7 +25,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Met�do privado que carga las canciones y las agrega a la lista.
+	 * Metï¿½do privado que carga las canciones y las agrega a la lista.
 	 * */
 	private void loadSongs() {
 		ArrayList<String[]> mp3List = this.fm.findFiles(".mp3");
@@ -45,7 +45,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Met�do privado que carga el arte de canciones y los agrega a la lista.
+	 * Metï¿½do privado que carga el arte de canciones y los agrega a la lista.
 	 * */
 	private void loadArtwork() {
 		ArrayList<String[]> jpgList = this.fm.findFiles("jpg");
@@ -73,12 +73,12 @@ public class SongManager {
 	}
 	
 	/**
-	 *Met�do que crea canciones y las agrega a la lista.
+	 *Metï¿½do que crea canciones y las agrega a la lista.
 	 *@param songData Los datos de la cancion a cargar.
 	 * */
 	private void addSong(String[] songData, String fileType) {
 		
-		if(songData[0].matches(String.format("[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+.%s", fileType))) {
+		if(songData[0].matches(String.format("[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+.%s", fileType))) {
 			String[] songInfo = songData[0].split("__");
 			
 			this.songList.add(
@@ -97,12 +97,12 @@ public class SongManager {
 	
 	
 	/**
-	 *Met�do que crea objetos Artwork y los agrega a la lista.
+	 *Metï¿½do que crea objetos Artwork y los agrega a la lista.
 	 *@param artworkData Los datos del objeto ArtWork a crear.
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
 		
-		if(artworkData[0].matches(String.format("[0-9a-zA-z!_,\\s\\-?']+__[0-9a-zA-z!_,\\s\\-?']+.%s", fileType))) {
+		if(artworkData[0].matches(String.format("[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+.%s", fileType))) {
 			String[] artworkInfo = artworkData[0].split("__");
 			
 			this.artworkList.add(
@@ -116,7 +116,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Met�do que convierte el ArrayList de Song a una cadena JSON.
+	 * Metï¿½do que convierte el ArrayList de Song a una cadena JSON.
 	 * @return json
 	 * */
 	public String getSongsAsJSON() {
@@ -144,7 +144,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Met�do que convierte el ArrayList de Artwork a una cadena JSON.
+	 * Metï¿½do que convierte el ArrayList de Artwork a una cadena JSON.
 	 * @return json
 	 * */
 	public String getArtworksAsJSON() {
@@ -171,13 +171,13 @@ public class SongManager {
 	}
 	
 	/**
-	 * Método que sirve para encontrar una canción y devolver el objeto Song.
-	 * @param title Titulo de la canción
-	 * @param author Autor de la canción
-	 * @param album Albúm de la canción
+	 * MÃ©todo que sirve para encontrar una canciÃ³n y devolver el objeto Song.
+	 * @param title Titulo de la canciÃ³n
+	 * @param author Autor de la canciÃ³n
+	 * @param album AlbÃºm de la canciÃ³n
 	 * @return foundSong Objeto Song
 	 * */
-	private Song getCurrentSong(String title, String author, String album) {
+	public Song getCurrentSong(String title, String author, String album) {
 		Song  foundSong = null;
 		
 		for(Song currentSong: this.songList) {
@@ -195,9 +195,9 @@ public class SongManager {
 	}
 	
 	/**
-	 * Método que sirve para encontrar un arte de albúm y devolver el objeto Artwork.
-	 * @param author Autor de la canción
-	 * @param album Albúm de la canción
+	 * MÃ©todo que sirve para encontrar un arte de albÃºm y devolver el objeto Artwork.
+	 * @param author Autor de la canciÃ³n
+	 * @param album AlbÃºm de la canciÃ³n
 	 * @return foundSong Objeto Song
 	 * */
 	private Artwork getCurrentArtwork(String author, String album) {
@@ -217,10 +217,14 @@ public class SongManager {
 	}
 	
 	/**
-	 * M�todo que mueve la canci�n deseada a la carpeta webapps/ROOT/CurrentSong
+	 * Mï¿½todo que copia la canciï¿½n deseada a la carpeta webapps/ROOT/CurrentSong utilizando FileManager.
+	 * @param title Titulo de la canciï¿½n
+	 * @param author Autor de la canciï¿½n
+	 * @param album Albï¿½m de la canciï¿½n
+	 * @return json de los archivos encontrados
 	 * */
 	public String setCurrentSong(String title, String author, String album) {
-		//this.fm.deleteCurrentSong();
+		this.fm.deleteCurrentSong();
 		
 		String status = "Failure";
 		String songFile = "Not Found";
@@ -231,6 +235,7 @@ public class SongManager {
 		
 		
 		if(song != null) {
+			//this.fm.deleteCurrentSong();
 			status = "Success";
 			String fileType = ".mp3";
 			if(song.getLocation().contains(".ogg")) {
