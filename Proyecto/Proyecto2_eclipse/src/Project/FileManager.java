@@ -183,21 +183,21 @@ public class FileManager {
 	}
 	
 	/**
-	 * Método que elimina el directorio CurrentSong
-	 * */
-	public void deleteCurrentSong() {
-		String tomcatPath = this.getRootDirectory();
-		File currentSongDir = new File(String.format("%s/webapps/ROOT/CurrentSong", tomcatPath));
-		
-		if(currentSongDir.exists()) {
-			File[] fileList = currentSongDir.listFiles();
-			
-			for(File currentFile: fileList) {
-				currentFile.delete();
-			}
-		}
-	}
-	
+     * Metodo que elimina el directorio CurrentSong
+     * */
+    public void deleteCurrentSong() {
+        String tomcatPath = this.getRootDirectory();
+        File currentSongDir = new File(String.format("%s/webapps/ROOT/CurrentSong", tomcatPath));
+
+        if(currentSongDir.exists()) {
+            File[] fileList = currentSongDir.listFiles();
+
+            for(File currentFile: fileList) {
+                currentFile.delete();
+            }
+        }
+    }
+    
 	/**
 	 * Metodo para leer el archivo de un texto
 	 * @param String lyricsFile es el archivo a leer

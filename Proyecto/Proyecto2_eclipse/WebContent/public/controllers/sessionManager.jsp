@@ -11,7 +11,7 @@
     		
 		if(request.getParameter("command").equals("addToSession")){
 	
-				List<String> selectedSongs = (List<String>)session.getAttribute("selected");
+				ArrayList<String> selectedSongs = (ArrayList<String>)session.getAttribute("selected");
 				if(request.getParameter("option").equals("1")){
 					
 					if(selectedSongs == null){
@@ -26,17 +26,30 @@
 					selectedSongs.clear();
 					selectedSongs.addAll(hashSet);
 			
-
 				}else if(request.getParameter("option").equals("2")){
 					for(String i : selectedSongs){
 						out.print(i + "\n");
 					}
 					execZIP.loadZIP(selectedSongs);
+					
+				}else if(request.getParameter("option").equals("3")){
+					StringBuilder jsonSelectedSongs = new StringBuilder("{\"selected\":[");
+					int count = 1;
+					for (String i : selectedSongs){
+						if(count != selectedSongs.size()){
+							jsonSelectedSongs.append(String.format("\"%s\",",i));
+						}else{
+							jsonSelectedSongs.append(String.format("\"%s\"",i));
+						}
+						count ++;
+					}
+					jsonSelectedSongs.append("]}");
+					out.print(jsonSelectedSongs.toString().trim());
 				}
+				
 		}
-		
-    	
     }
+    
     else{
     	out.print("{\"result\":\"Unknown parameter\"}");
     }

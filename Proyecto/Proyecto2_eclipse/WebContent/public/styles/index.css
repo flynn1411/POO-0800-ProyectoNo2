@@ -355,6 +355,11 @@ input#currentVolumeBar::-moz-range-thumb {
 }
 /*=======================================================================================*/
 /* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
+button{
+    background: skyblue;
+    width: 49%;
+    height: 5%;
+}
 div#viewLyric{
     position: absolute;
     width: 25%;

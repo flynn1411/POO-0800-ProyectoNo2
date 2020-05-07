@@ -26,8 +26,8 @@
 	    	
 	    	//azlyrics
 	    	}else if(request.getParameter("command").toString().trim().equals("az")){
-				String artist = request.getParameter("artist").toString().trim().replace(" ", "").toLowerCase();
-				String song = request.getParameter("title").toString().trim().replace(" ", "").toLowerCase();
+				String artist = request.getParameter("artist").toString().trim().replace(" ", "").replace(",","").replace("'","").toLowerCase();
+				String song = request.getParameter("title").toString().trim().replace(" ", "").replace(",","").replace("'","").toLowerCase();
 				//Url para obtener la letra de la cancion.
 	    	    String url = String.format("https://www.azlyrics.com/lyrics/%s/%s.html",artist,song);
 	    	    //Buscamos y la imprimimos

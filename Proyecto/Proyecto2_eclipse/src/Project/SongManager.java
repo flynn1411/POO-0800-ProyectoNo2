@@ -25,7 +25,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metï¿½do privado que carga las canciones y las agrega a la lista.
+	 * Metódo privado que carga las canciones y las agrega a la lista.
 	 * */
 	private void loadSongs() {
 		ArrayList<String[]> mp3List = this.fm.findFiles(".mp3");
@@ -45,7 +45,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metï¿½do privado que carga el arte de canciones y los agrega a la lista.
+	 * Metódo privado que carga el arte de canciones y los agrega a la lista.
 	 * */
 	private void loadArtwork() {
 		ArrayList<String[]> jpgList = this.fm.findFiles("jpg");
@@ -73,12 +73,12 @@ public class SongManager {
 	}
 	
 	/**
-	 *Metï¿½do que crea canciones y las agrega a la lista.
+	 *Metódo que crea canciones y las agrega a la lista.
 	 *@param songData Los datos de la cancion a cargar.
 	 * */
 	private void addSong(String[] songData, String fileType) {
 		
-		if(songData[0].matches(String.format("[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+.%s", fileType))) {
+		if(songData[0].matches(String.format("[0-9a-zA-záéíóúñÁÉÍÓÚÑ!_,\\s\\-?']+__[0-9a-zA-záéíóúñÁÉÍÓÚÑ!_,\\s\\-?']+__[0-9a-zA-záéíóúñÁÉÍÓÚÑ!_,\\s\\-?']+.%s", fileType))) {
 			String[] songInfo = songData[0].split("__");
 			
 			this.songList.add(
@@ -97,12 +97,12 @@ public class SongManager {
 	
 	
 	/**
-	 *Metï¿½do que crea objetos Artwork y los agrega a la lista.
+	 *Met�do que crea objetos Artwork y los agrega a la lista.
 	 *@param artworkData Los datos del objeto ArtWork a crear.
 	 * */
 	private void addArtwork(String[] artworkData, String fileType) {
 		
-		if(artworkData[0].matches(String.format("[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+__[0-9a-zA-zÃ¡Ã©Ã­Ã³ÃºÃ±Ã�Ã‰Ã�Ã“ÃšÃ‘!_,\\s\\-?']+.%s", fileType))) {
+		if(artworkData[0].matches(String.format("[0-9a-zA-záéíóúñÁÉÍÓÚÑ!_,\\s\\-?']+__[0-9a-zA-záéíóúñÁÉÍÓÚÑ!_,\\s\\-?']+.%s", fileType))) {
 			String[] artworkInfo = artworkData[0].split("__");
 			
 			this.artworkList.add(
@@ -116,7 +116,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metï¿½do que convierte el ArrayList de Song a una cadena JSON.
+	 * Met�do que convierte el ArrayList de Song a una cadena JSON.
 	 * @return json
 	 * */
 	public String getSongsAsJSON() {
@@ -144,7 +144,7 @@ public class SongManager {
 	}
 	
 	/**
-	 * Metï¿½do que convierte el ArrayList de Artwork a una cadena JSON.
+	 * Met�do que convierte el ArrayList de Artwork a una cadena JSON.
 	 * @return json
 	 * */
 	public String getArtworksAsJSON() {
@@ -171,10 +171,10 @@ public class SongManager {
 	}
 	
 	/**
-	 * MÃ©todo que sirve para encontrar una canciÃ³n y devolver el objeto Song.
-	 * @param title Titulo de la canciÃ³n
-	 * @param author Autor de la canciÃ³n
-	 * @param album AlbÃºm de la canciÃ³n
+	 * Método que sirve para encontrar una canción y devolver el objeto Song.
+	 * @param title Titulo de la canción
+	 * @param author Autor de la canción
+	 * @param album Albúm de la canción
 	 * @return foundSong Objeto Song
 	 * */
 	public Song getCurrentSong(String title, String author, String album) {
@@ -195,9 +195,9 @@ public class SongManager {
 	}
 	
 	/**
-	 * MÃ©todo que sirve para encontrar un arte de albÃºm y devolver el objeto Artwork.
-	 * @param author Autor de la canciÃ³n
-	 * @param album AlbÃºm de la canciÃ³n
+	 * Método que sirve para encontrar un arte de albúm y devolver el objeto Artwork.
+	 * @param author Autor de la canción
+	 * @param album Albúm de la canción
 	 * @return foundSong Objeto Song
 	 * */
 	private Artwork getCurrentArtwork(String author, String album) {
@@ -217,10 +217,10 @@ public class SongManager {
 	}
 	
 	/**
-	 * Mï¿½todo que copia la canciï¿½n deseada a la carpeta webapps/ROOT/CurrentSong utilizando FileManager.
-	 * @param title Titulo de la canciï¿½n
-	 * @param author Autor de la canciï¿½n
-	 * @param album Albï¿½m de la canciï¿½n
+	 * M�todo que copia la canci�n deseada a la carpeta webapps/ROOT/CurrentSong utilizando FileManager.
+	 * @param title Titulo de la canci�n
+	 * @param author Autor de la canci�n
+	 * @param album Alb�m de la canci�n
 	 * @return json de los archivos encontrados
 	 * */
 	public String setCurrentSong(String title, String author, String album) {
@@ -235,7 +235,7 @@ public class SongManager {
 		
 		
 		if(song != null) {
-			//this.fm.deleteCurrentSong();
+			this.fm.deleteCurrentSong();
 			status = "Success";
 			String fileType = ".mp3";
 			if(song.getLocation().contains(".ogg")) {
@@ -280,5 +280,28 @@ public class SongManager {
 				songFile,
 				artworkFile
 				);
+	}
+	
+	/**
+	 * Método que obtiene las rutas absolutas de una lista de canciones.
+	 * @param songs Lista de canciones.
+	 * @return songsPaths Rutas de cada canción.
+	 * */
+	public ArrayList<String> getSongsLocations(ArrayList<String> songs){
+		ArrayList<String> songsPaths = new ArrayList<String>();
+		
+		for(String songInfo: songs) {
+			System.out.println(songInfo);
+			songInfo = songInfo.replaceAll(".ogg", "").replaceAll(".mp3", "");
+			String[] song = songInfo.split("__");
+			
+			Song currentSong = this.getCurrentSong(song[2], song[0], song[1]);
+			
+			if(currentSong != null) {
+				songsPaths.add(currentSong.getLocation().toString().replaceAll(" ","\\\\ "));
+			}
+		}
+		
+		return songsPaths;
 	}
 }

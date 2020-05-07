@@ -1,18 +1,12 @@
 package Project;
-import java.io.IOException;
-import java.net.URL;
 import java.io.*;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 public class ExecuteZIP {
 	
 	private String eclipsePath;
 	private String tomcatPath;
-	private String temp;
-	private String[] arrPaths;
-	private StringBuilder shContent = new StringBuilder();
+	private StringBuilder shContent = new StringBuilder("");
 	private String finalPathZIP; 
 	private SongManager songManager = new SongManager();
 	private StringBuilder pyContent = new StringBuilder("import zipfile\n" + 
@@ -26,61 +20,51 @@ public class ExecuteZIP {
 			"            archivo_zip.write(i)\n" + 
 			"\n" + 
 			"    archivo_zip.close()");
-	//private String contentSh = "python3 convertToZip.py";
 
 	public ExecuteZIP() {} 
 	
 	//Carga la ejecucion de la creacion del zip recibiendo una lista de nombres de archivos canciones.
-	public void loadZIP(List<String> nameSongs){
+	public void loadZIP(ArrayList<String> nameSongs){
 		this.getPaths();
-		finalPathZIP = String.format("%s/Python",eclipsePath);
+		finalPathZIP = String.format("%s",eclipsePath);
 		StringBuilder linuxCommand = new StringBuilder("python3 Python/convertToZip.py");
-		List<String> paths = new ArrayList<String>();
-		List<String> fileName = new ArrayList<String>();
+		ArrayList<String> paths = this.songManager.getSongsLocations(nameSongs);
+		ArrayList<String> fileName = new ArrayList<String>();
 		
-		String fileType = ".mp3";
-		for(String inf : nameSongs) {
-			//System.out.print(inf + "\n");
-			fileName.add(inf);
-			String[] arrInf = inf.split("__");
-			
-			String author = arrInf[0];
-			String album = arrInf[1];
-			String title = arrInf[2].replaceAll(fileType, "");
-			Song currentSong = songManager.getCurrentSong(title,author,album); 
-			String currentPath = currentSong.getLocation().toString();
-			String pathCommand = currentPath.replaceAll(" ","\\\\ "); 
-			paths.add(pathCommand); 
-		} 
+		StringBuilder array = new StringBuilder("[");
+		for(String path: paths) {
+			array.append(String.format("%s,", path));
+		}
+		array.append("]");
+		
+		System.out.append(array.toString());
 		
 		for (String pathToCopy : paths){
 			shContent.append(String.format("cp %s %s\n",pathToCopy,finalPathZIP));
 		}
+		 
+		for(String fileN : fileName) {
+			linuxCommand.append(String.format(" %s",fileN.replaceAll(" ","\\\\ ")));
+		}
+		linuxCommand.append("\n");
 		
 		for(String fileN : fileName) {
-			linuxCommand.append(String.format(" Python/%s",fileN.replaceAll(" ","\\\\ ")));
+			linuxCommand.append(String.format("rm -f %s\n",fileN.replaceAll(" ","\\\\ ")));
 		}
-		shContent.append(linuxCommand.toString());
+		linuxCommand.append(String.format("mv %s/Songs.zip %s/webapps/ROOT",eclipsePath,tomcatPath));
+		
 		System.out.print(linuxCommand);
+		shContent.append(linuxCommand.toString());
 		
 		this.createDirectory("Python");
 		this.createFile("Python/copySongs.sh",shContent.toString());
 		this.createFile("Python/convertToZip.py",pyContent.toString());
-		//this.createDirectory("Python/Songs");
 		try {
-			this.executeSH("sh Python/copySongs.sh");
+			this.executeSH("Python/copySongs.sh");
 			System.out.print("Archivo ZIP creado");
 		}catch(Exception e) {
 			System.out.print("HUBO UN ERROR EN LA CREACION DEL ZIP");
 		}
-		//System.out.println(contentSh);
-	}
-
-
-	public void executeSH(String pathOfSh) throws IOException {
-		//String cmd = "sh /home/mrzombie/Documents/UNAH/POO/CarpetaPruebas/prueba.sh";
-		ProcessBuilder pb = new ProcessBuilder("bash", "-c",pathOfSh);
-		pb.start();
 	}
 	
 	public void getPaths() {
@@ -119,18 +103,15 @@ public class ExecuteZIP {
 		}
 	}
 	
-	public String loadWorkPlace() {
-		return tomcatPath = System.getProperty("catalina.home");
-	}
-	
-	public void loadNewSong(String pathOrigin, String pathDestiny) {
+	//Sub-proceso para la ejecucion del archivo .sh
+	public void executeSH(String shPath) {
 		try {
-			Process p = Runtime.getRuntime().exec(String.format("cp %s %s",pathOrigin,pathDestiny));
+			Process p = Runtime.getRuntime().exec(String.format("sh %s",shPath));
 			p.waitFor();
-			if(p.exitValue()==0){System.out.print("Exitoso");}else{System.out.print("Fracaso");}			
+			if(p.exitValue()==0){System.out.print("Ejecucion del script exitosa.");}else{System.out.print("Fracaso en la ejecucion.");}			
 		
 		}catch(Exception e) {
-			System.out.print("Ha ocurrido un error");
+			System.out.print("Ha ocurrido un error al ejecutar el script.");
 		}
 	}
 

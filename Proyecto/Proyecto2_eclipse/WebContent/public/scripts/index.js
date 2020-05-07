@@ -5,11 +5,13 @@ function ViewFunctions(){
         songsList = [],                                                                     //Guarda los nombres de los archivos de las canciones.
         currentSong,                                                          //Guarda la cancion reproduciendo actualmente.
         pathOfCurrentSong = "http://localhost:8080/CurrentSong",
-        firstInteraction = false;
-        objSong.volume = 0.5;
-    
+        firstInteraction = false,
+        selectedSongsOfSession = [];
+        objSong.volume = 0.5
+        
         //------------------ Muestra los artistas y albumes y otros elementos iniciales en la pagina. -----------------
     this.loadArtistsAndAlbums = function(){
+        currentLyric2.style.display = "none";
         var htmlArtists = '<body>',
             htmlAlbums= '<body>';
             arrOfArtists = [],
@@ -70,16 +72,20 @@ function ViewFunctions(){
             parameters = {"command":"retrieveSongs"},
             callback = function(content){
                 var jsonSongFile = JSON.parse(content),
-                    arrLibrary2 = jsonSongFile.result.songs 
+                    arrLibrary2 = jsonSongFile.result.songs;
+                     
                 
                 //Recorre los elementos de un arreglo con las canciones de la libreria para agregarlas a la tabla de resultados.
                 for(i in arrLibrary2){
                     let fileName = `${arrLibrary2[i].author}__${arrLibrary2[i].album}__${arrLibrary2[i].title}.mp3`, //Nombre del archivo.
+                        checked = "none",
                         inf = `${arrLibrary2[i].title} ${arrLibrary2[i].author} ${arrLibrary2[i].album}`;  
                         inf = inf.toLowerCase();
-
+                    //console.log(selectedSongsOfSession);
                     if(inf.indexOf(enteredText) != -1 && enteredText !=""){
-                        html_ += `<tr><td class="inconstant" onclick="playClickedSong(this)" name="${fileName}"><input type="checkbox" value=${i} class="inconstant checked" onclick="temp.saveChangesToResults()">${arrLibrary2[i].author} - ${arrLibrary2[i].title}</td></tr>`;    
+                        if(selectedSongsOfSession.includes(fileName)==true){checked="checked";}
+                        //console.log("Valor del checked: ",checked);
+                        html_ += `<tr><td class="inconstant" onclick="temp.playClickedSong(this)" name="${fileName}"><input type="checkbox" value=${i} class="inconstant checked" onclick="temp.saveChangesToResults()" ${checked}>${arrLibrary2[i].author} - ${arrLibrary2[i].title}</td></tr>`;    
                     }
                 }
                 
@@ -175,13 +181,33 @@ function ViewFunctions(){
 //============================= FUNCIONES AUXILIARES DE LOS CONTROLES =================================
     //------------ Descarga los elementos seleccionados en el checkbox ----------------
     this.downloadElements = function(){               
-        console.log(arrForDownload);
+        //console.log(arrForDownload);
+        //console.log(selectedSongsOfSession);
         var action = "controllers/sessionManager.jsp",
             parameters = {"command":"addToSession","option":"2"},
             callback = function(content){
-                    console.log(content);
+                    //console.log(content);
             };
             $.post(action,parameters,callback);
+    }
+
+    //Aplica el checked a las canciones que previamente fueron seleccionadas y guardadas en la sesion.
+    this.loadCheckedSongs = function(){
+        
+        var action = "controllers/sessionManager.jsp";
+        var parameters = {"command":"addToSession","option":"3"}
+        var callback = function(content){
+            var selectedSongs = JSON.parse(content);
+            selectedSongsOfSession = [];
+            console.log("EN EL AJAX: ",selectedSongs);
+            if(selectedSongs){
+                let tempArr = selectedSongs.selected;
+                for (i in tempArr){
+                    selectedSongsOfSession.push(tempArr[i]);
+                }
+            }
+        }
+        $.post(action,parameters,callback);
     }
 
     //Llamada para salvar todos los cambios o resultados mostrados en el area de busqueda.
@@ -278,13 +304,15 @@ function ViewFunctions(){
                     $.post("controllers/LyricsController.jsp",{"command":"api","artist":author,"title":title}, function(data){
                 		//console.log(data);
                     	let json = JSON.parse(data);
+                    	
                 		let apiLyric = json.lyrics.replace("\\n", "<br>");
-                		currentLyricR.innerHTML = apiLyric;
+                		//currentLyricR.innerHTML = apiLyric;
                 		currentLyric.innerHTML = apiLyric;
                 	});
                     $.post("controllers/LyricsController.jsp",{"command":"az","artist":author,"title":title}, function(data){
                     	let json = JSON.parse(data);
-                    	console.log(json);
+                        currentLyric2.innerHTML = json.Lyrics; 
+                        //console.log(json);
                 	});
                 };
             }
@@ -301,11 +329,6 @@ function ViewFunctions(){
         
         currentSong = fileName;
         return [title,author,album];
-    }
-
-    //Capitaliza un texto.
-    this.capitalize = function(text) {
-        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
     }
 
     //Cambia un icono dependiendo del estado play/pause de la cancion.
@@ -325,6 +348,15 @@ function ViewFunctions(){
         }
     }
     
+    this.displayLyricA = function(){
+        currentLyric.style.display = "block";
+        currentLyric2.style.display = "none";
+    }
+
+    this.displayLyricB = function(){
+        currentLyric2.style.display = "block";
+        currentLyric.style.display = "none";
+    }
     //Actualiza el valor maximo de la barra de progreso.
     updateMaxProgress = function(){
         objSong.onloadedmetadata = function() {
@@ -332,4 +364,5 @@ function ViewFunctions(){
             inputProgressBar.max = objSong.duration.toString();
         };
     }
+
 }
