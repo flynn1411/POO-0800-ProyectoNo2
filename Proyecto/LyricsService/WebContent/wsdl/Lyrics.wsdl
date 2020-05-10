@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://soup" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://soup" xmlns:intf="http://soup" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://soup" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="write">
+    <complexType>
+     <sequence>
+      <element name="song" type="xsd:string"/>
+      <element name="type" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="writeResponse">
+    <complexType/>
+   </element>
+   <element name="read">
+    <complexType>
+     <sequence>
+      <element name="lyricsFile" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="readResponse">
+    <complexType>
+     <sequence>
+      <element name="readReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="lyrics">
+    <complexType>
+     <sequence>
+      <element name="artist" type="xsd:string"/>
+      <element name="title" type="xsd:string"/>
+      <element name="type" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="lyricsResponse">
+    <complexType>
+     <sequence>
+      <element name="lyricsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="htmlCleaner">
+    <complexType>
+     <sequence>
+      <element name="html" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="htmlCleanerResponse">
+    <complexType>
+     <sequence>
+      <element name="htmlCleanerReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="readRequest">
+
+      <wsdl:part element="impl:read" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="readResponse">
+
+      <wsdl:part element="impl:readResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="lyricsRequest">
+
+      <wsdl:part element="impl:lyrics" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="htmlCleanerRequest">
+
+      <wsdl:part element="impl:htmlCleaner" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="writeRequest">
+
+      <wsdl:part element="impl:write" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="lyricsResponse">
+
+      <wsdl:part element="impl:lyricsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="htmlCleanerResponse">
+
+      <wsdl:part element="impl:htmlCleanerResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="writeResponse">
+
+      <wsdl:part element="impl:writeResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Lyrics">
+
+      <wsdl:operation name="write">
+
+         <wsdl:input message="impl:writeRequest" name="writeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:writeResponse" name="writeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="read">
+
+         <wsdl:input message="impl:readRequest" name="readRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:readResponse" name="readResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="lyrics">
+
+         <wsdl:input message="impl:lyricsRequest" name="lyricsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:lyricsResponse" name="lyricsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="htmlCleaner">
+
+         <wsdl:input message="impl:htmlCleanerRequest" name="htmlCleanerRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:htmlCleanerResponse" name="htmlCleanerResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="LyricsSoapBinding" type="impl:Lyrics">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="write">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="writeRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="writeResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="read">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="readRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="readResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="lyrics">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="lyricsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="lyricsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="htmlCleaner">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="htmlCleanerRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="htmlCleanerResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="LyricsService">
+
+      <wsdl:port binding="impl:LyricsSoapBinding" name="Lyrics">
+
+         <wsdlsoap:address location="http://localhost:8080/soup/services/Lyrics"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

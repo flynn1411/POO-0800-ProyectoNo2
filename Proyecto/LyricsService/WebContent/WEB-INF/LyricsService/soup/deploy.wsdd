@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from LyricsService WSDL service -->
+
+  <service name="Lyrics" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://soup"/>
+      <parameter name="wsdlServiceElement" value="LyricsService"/>
+      <parameter name="schemaQualified" value="http://soup"/>
+      <parameter name="wsdlServicePort" value="Lyrics"/>
+      <parameter name="className" value="soup.Lyrics"/>
+      <parameter name="wsdlPortType" value="Lyrics"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://soup" name="write" qname="operNS:write" soapAction="">
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:song" type="tns:string"/>
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:type" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://soup" xmlns:retNS="http://soup" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="read" qname="operNS:read" returnQName="retNS:readReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:lyricsFile" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://soup" xmlns:retNS="http://soup" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="lyrics" qname="operNS:lyrics" returnQName="retNS:lyricsReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:artist" type="tns:string"/>
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:title" type="tns:string"/>
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:type" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://soup" xmlns:retNS="http://soup" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="htmlCleaner" qname="operNS:htmlCleaner" returnQName="retNS:htmlCleanerReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://soup" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:html" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="htmlCleaner read write lyrics"/>
+
+  </service>
+</deployment>
