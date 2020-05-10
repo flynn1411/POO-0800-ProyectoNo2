@@ -19,7 +19,7 @@
         <!--================ ELEMENTOS DEL AREA SUPERIOR ================-->
         <div class="searchArea" onmouseleave="display()">
             <i class="btn">
-                <img src="styles/themes/Neon2020/theme_icon.png" id="credits" class="topIcon">
+                <img src="styles/themes/Neon2020/info_icon.png" onclick="temp.viewCredits()" class="topIcon">
             </i>    
             <input id="searchBox" class="inconstant tbox" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="temp.searchElement()">
             <div id="resultsToSearch" class="inconstant">
@@ -112,6 +112,14 @@
             <button id="btnLyric2" onclick="temp.displayLyricB()">Lirica B</button>
             <button id="btnRedirect" onclick="redirect()">Lyric WebService</button> 
             <div class="lyric"><p id="currentLyric"></p> <p id="currentLyric2"></p></div>
+        </div>
+        
+        <!-- VENTANA EMERGENTE PARA VER LOS CREDITOS  -->
+        <div id="overlayBtnCredits" class="overlay">
+            <div id="popupBtnCredits" class="popup">
+                <p id="textCredits"></p>
+                <button id="btnCloseCredits" onclick="temp.closeCredits()">Cerrar</button>
+            </div>
         </div>
         
         <script>

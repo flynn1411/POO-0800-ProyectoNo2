@@ -27,6 +27,9 @@
       <operation name="read" qname="operNS:read" xmlns:operNS="http://soup" returnQName="retNS:readReturn" xmlns:retNS="http://soup" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:lyricsFile" xmlns:pns="http://soup" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
+      <operation name="delete" qname="operNS:delete" xmlns:operNS="http://soup" soapAction="" >
+        <parameter qname="pns:fileName" xmlns:pns="http://soup" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
       <operation name="lyrics" qname="operNS:lyrics" xmlns:operNS="http://soup" returnQName="retNS:lyricsReturn" xmlns:retNS="http://soup" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:artist" xmlns:pns="http://soup" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
         <parameter qname="pns:title" xmlns:pns="http://soup" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
@@ -35,7 +38,7 @@
       <operation name="htmlCleaner" qname="operNS:htmlCleaner" xmlns:operNS="http://soup" returnQName="retNS:htmlCleanerReturn" xmlns:retNS="http://soup" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
         <parameter qname="pns:html" xmlns:pns="http://soup" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
       </operation>
-      <parameter name="allowedMethods" value="htmlCleaner read write lyrics"/>
+      <parameter name="allowedMethods" value="htmlCleaner read write delete lyrics"/>
 
   </service>
 </deployment>

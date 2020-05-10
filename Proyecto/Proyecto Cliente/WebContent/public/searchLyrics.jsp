@@ -50,7 +50,6 @@
 			});
 			$.post("controllers/soapController.jsp",{"artist":artist,"title":title,"command":"az"},function(data){
 				var json = JSON.parse(data);
-				console.log(data);
 				document.getElementById("lyricB").innerHTML = json.Lyrics;
 			});
 			

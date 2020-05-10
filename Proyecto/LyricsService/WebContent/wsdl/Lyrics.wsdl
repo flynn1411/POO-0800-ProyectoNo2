@@ -1,34 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="http://soup" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://soup" xmlns:intf="http://soup" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions targetNamespace="http://soap" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://soap" xmlns:intf="http://soap" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <!--WSDL created by Apache Axis version: 1.4
 Built on Apr 22, 2006 (06:55:48 PDT)-->
  <wsdl:types>
-  <schema elementFormDefault="qualified" targetNamespace="http://soup" xmlns="http://www.w3.org/2001/XMLSchema">
-   <element name="write">
-    <complexType>
-     <sequence>
-      <element name="song" type="xsd:string"/>
-      <element name="type" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="writeResponse">
-    <complexType/>
-   </element>
-   <element name="read">
-    <complexType>
-     <sequence>
-      <element name="lyricsFile" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
-   <element name="readResponse">
-    <complexType>
-     <sequence>
-      <element name="readReturn" type="xsd:string"/>
-     </sequence>
-    </complexType>
-   </element>
+  <schema elementFormDefault="qualified" targetNamespace="http://soap" xmlns="http://www.w3.org/2001/XMLSchema">
    <element name="lyrics">
     <complexType>
      <sequence>
@@ -59,24 +34,43 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
      </sequence>
     </complexType>
    </element>
+   <element name="write">
+    <complexType>
+     <sequence>
+      <element name="song" type="xsd:string"/>
+      <element name="type" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="writeResponse">
+    <complexType/>
+   </element>
+   <element name="read">
+    <complexType>
+     <sequence>
+      <element name="lyricsFile" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="readResponse">
+    <complexType>
+     <sequence>
+      <element name="readReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="delete">
+    <complexType>
+     <sequence>
+      <element name="fileName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deleteResponse">
+    <complexType/>
+   </element>
   </schema>
  </wsdl:types>
-
-   <wsdl:message name="readRequest">
-
-      <wsdl:part element="impl:read" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="readResponse">
-
-      <wsdl:part element="impl:readResponse" name="parameters">
-
-      </wsdl:part>
-
-   </wsdl:message>
 
    <wsdl:message name="lyricsRequest">
 
@@ -94,9 +88,25 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="writeRequest">
+   <wsdl:message name="readResponse">
 
-      <wsdl:part element="impl:write" name="parameters">
+      <wsdl:part element="impl:readResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="readRequest">
+
+      <wsdl:part element="impl:read" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteResponse">
+
+      <wsdl:part element="impl:deleteResponse" name="parameters">
 
       </wsdl:part>
 
@@ -118,6 +128,14 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="writeRequest">
+
+      <wsdl:part element="impl:write" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="writeResponse">
 
       <wsdl:part element="impl:writeResponse" name="parameters">
@@ -126,31 +144,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="deleteRequest">
+
+      <wsdl:part element="impl:delete" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:portType name="Lyrics">
-
-      <wsdl:operation name="write">
-
-         <wsdl:input message="impl:writeRequest" name="writeRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:writeResponse" name="writeResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
-
-      <wsdl:operation name="read">
-
-         <wsdl:input message="impl:readRequest" name="readRequest">
-
-       </wsdl:input>
-
-         <wsdl:output message="impl:readResponse" name="readResponse">
-
-       </wsdl:output>
-
-      </wsdl:operation>
 
       <wsdl:operation name="lyrics">
 
@@ -176,47 +178,47 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
-   </wsdl:portType>
-
-   <wsdl:binding name="LyricsSoapBinding" type="impl:Lyrics">
-
-      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-
       <wsdl:operation name="write">
 
-         <wsdlsoap:operation soapAction=""/>
+         <wsdl:input message="impl:writeRequest" name="writeRequest">
 
-         <wsdl:input name="writeRequest">
+       </wsdl:input>
 
-            <wsdlsoap:body use="literal"/>
+         <wsdl:output message="impl:writeResponse" name="writeResponse">
 
-         </wsdl:input>
-
-         <wsdl:output name="writeResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
+       </wsdl:output>
 
       </wsdl:operation>
 
       <wsdl:operation name="read">
 
-         <wsdlsoap:operation soapAction=""/>
+         <wsdl:input message="impl:readRequest" name="readRequest">
 
-         <wsdl:input name="readRequest">
+       </wsdl:input>
 
-            <wsdlsoap:body use="literal"/>
+         <wsdl:output message="impl:readResponse" name="readResponse">
 
-         </wsdl:input>
-
-         <wsdl:output name="readResponse">
-
-            <wsdlsoap:body use="literal"/>
-
-         </wsdl:output>
+       </wsdl:output>
 
       </wsdl:operation>
+
+      <wsdl:operation name="delete">
+
+         <wsdl:input message="impl:deleteRequest" name="deleteRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:deleteResponse" name="deleteResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="LyricsSoapBinding" type="impl:Lyrics">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
 
       <wsdl:operation name="lyrics">
 
@@ -254,13 +256,67 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:operation>
 
+      <wsdl:operation name="write">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="writeRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="writeResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="read">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="readRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="readResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="delete">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="deleteRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="deleteResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
    </wsdl:binding>
 
    <wsdl:service name="LyricsService">
 
       <wsdl:port binding="impl:LyricsSoapBinding" name="Lyrics">
 
-         <wsdlsoap:address location="http://localhost:8080/soup/services/Lyrics"/>
+         <wsdlsoap:address location="http://localhost:8080/LyricsService/services/Lyrics"/>
 
       </wsdl:port>
 

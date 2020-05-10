@@ -371,6 +371,30 @@ function ViewFunctions(){
         currentLyric2.style.display = "block";
         currentLyric.style.display = "none";
     }
+
+    //Visualiza la ventana de creditos
+    this.viewCredits = function(){
+        this.contentCredits()
+        overlayBtnCredits.classList.add('active');
+        popupBtnCredits.classList.add('active');
+    }
+
+    this.closeCredits = function(){
+        overlayBtnCredits.classList.remove('active');
+        popupBtnCredits.classList.remove('active');
+    }
+    
+    this.contentCredits = function(){
+        var html = "Programacion Orientada a Objetos<br>";
+        html += "Proyecto No.1<br>";
+        html += "Ing. Jose Manuel Inestroza<br><br>";
+        html += "Integrantes: <br>";
+        html += "Fernando Cortes - 20171030809 - fernando.cortes@unah.hn <br>";
+        html += "Josué Ariel Izaguirre Mejia - 20171034157 - jaizaguirrem@unah.hn <br>"; 
+        html += "Luis Gerardo Gutierrez - 20161005902 - lggutierrez@unah.hn<br>";
+        textCredits.innerHTML = html;
+    }
+
     //Actualiza el valor maximo de la barra de progreso.
     updateMaxProgress = function(){
         objSong.onloadedmetadata = function() {
