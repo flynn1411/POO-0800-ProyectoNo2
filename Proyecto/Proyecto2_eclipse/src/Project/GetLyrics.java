@@ -2,7 +2,6 @@ package Project;
 
 import java.io.*;
 import java.net.*;
-
 /**
  * Metodo para obtener la letra de una pagina
  * @version 0.1.0
@@ -16,8 +15,8 @@ public class GetLyrics {
 	public void write(String song,String type) {
 		String textFile = "";
 		//Elegie que metodo si por medio de la api o desde la web.
-		if(type.equals("api"))textFile="lyricsAPI.txt";
-		else if(type.equals("az"))textFile="lyricsAZ.txt";
+		if(type.equals(Constants.API))textFile=Constants.APIFile;
+		else if(type.equals(Constants.AZ))textFile=Constants.AZFile;
 		
 		try {
 			//la url donde obtendremos la letra de la cancion

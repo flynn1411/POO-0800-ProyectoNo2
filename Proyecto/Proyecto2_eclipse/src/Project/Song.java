@@ -1,20 +1,20 @@
 package Project;
 
 /**
- * Objeto que contiene la información de las canciones encontradas en un directorio.
+ * Objeto que contiene la informaciï¿½n de las canciones encontradas en un directorio.
  * @version 0.1.0
  * */
 public class Song {
-	/**Titulo de la canción*/
+	/**Titulo de la canciï¿½n*/
 	private String title;
 	
-	/**Autor de la canción*/
+	/**Autor de la canciï¿½n*/
 	private String author;
 	
-	/**Album al que pertenece la canción*/
+	/**Album al que pertenece la canciï¿½n*/
 	private String album;
 	
-	/**Locación del archivo*/
+	/**Locaciï¿½n del archivo*/
 	private String location;
 	
 	/**Constructores de la clase*/
@@ -25,10 +25,10 @@ public class Song {
 		this.location = location;
 	}
 	
-	public Song(String location) {
-		this.title = "unknown";
-		this.album = "unknown";
-		this.author = "unknown";
+	public Song(String location, int n) {
+		this.title = String.format("Unknown Song%s", n);
+		this.album = String.format("Unknown Artist%s", n);
+		this.author = String.format("Unknown Album%s", n);
 		this.location = location;
 	}
 

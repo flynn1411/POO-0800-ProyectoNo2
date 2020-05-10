@@ -1,7 +1,6 @@
 package Project;
 import java.io.*;
 import java.util.ArrayList;
-//import java.util.List;
 public class ExecuteZIP {
 	
 	private String eclipsePath;
@@ -15,7 +14,7 @@ public class ExecuteZIP {
 			"fileList = sys.argv\n" + 
 			"fileList.pop(0)\n" + 
 			"if(fileList!= None):        \n" + 
-			"    with zipfile.ZipFile('Songs.zip','w') as archivo_zip:\n" + 
+			"    with zipfile.ZipFile('songs.zip','w') as archivo_zip:\n" + 
 			"        for i in fileList:\n" + 
 			"            archivo_zip.write(i)\n" + 
 			"\n" + 
@@ -29,31 +28,21 @@ public class ExecuteZIP {
 		finalPathZIP = String.format("%s",eclipsePath);
 		StringBuilder linuxCommand = new StringBuilder("python3 Python/convertToZip.py");
 		ArrayList<String> paths = this.songManager.getSongsLocations(nameSongs);
-		ArrayList<String> fileName = new ArrayList<String>();
-		
-		StringBuilder array = new StringBuilder("[");
-		for(String path: paths) {
-			array.append(String.format("%s,", path));
-		}
-		array.append("]");
-		
-		System.out.append(array.toString());
 		
 		for (String pathToCopy : paths){
 			shContent.append(String.format("cp %s %s\n",pathToCopy,finalPathZIP));
 		}
 		 
-		for(String fileN : fileName) {
+		for(String fileN : nameSongs) {
 			linuxCommand.append(String.format(" %s",fileN.replaceAll(" ","\\\\ ")));
-		}
+		} 
 		linuxCommand.append("\n");
 		
-		for(String fileN : fileName) {
+		for(String fileN : nameSongs) {
 			linuxCommand.append(String.format("rm -f %s\n",fileN.replaceAll(" ","\\\\ ")));
 		}
-		linuxCommand.append(String.format("mv %s/Songs.zip %s/webapps/ROOT",eclipsePath,tomcatPath));
+		linuxCommand.append(String.format("mv %s/songs.zip %s/webapps/ROOT",eclipsePath,tomcatPath));
 		
-		System.out.print(linuxCommand);
 		shContent.append(linuxCommand.toString());
 		
 		this.createDirectory("Python");
@@ -61,12 +50,13 @@ public class ExecuteZIP {
 		this.createFile("Python/convertToZip.py",pyContent.toString());
 		try {
 			this.executeSH("Python/copySongs.sh");
-			System.out.print("Archivo ZIP creado");
+			//System.out.print("Archivo ZIP creado");
 		}catch(Exception e) {
-			System.out.print("HUBO UN ERROR EN LA CREACION DEL ZIP");
+			//System.out.print("Ocurrio un error al intentar crear el archivo zip\n");
 		}
 	}
 	
+	//Obtiene la ruta local del eclipse y el tomcat.
 	public void getPaths() {
 		File f = new File("");
 		eclipsePath = f.getAbsolutePath();
@@ -75,7 +65,6 @@ public class ExecuteZIP {
 	
 	//Crea un archivo dado un ruta y el contenido.
 	public void createFile(String fileName, String content){
-		System.out.println("CREANDO");
 		this.createDirectory("Python");
 		//Crear el archivo .sh.
 		try{
@@ -108,11 +97,23 @@ public class ExecuteZIP {
 		try {
 			Process p = Runtime.getRuntime().exec(String.format("sh %s",shPath));
 			p.waitFor();
-			if(p.exitValue()==0){System.out.print("Ejecucion del script exitosa.");}else{System.out.print("Fracaso en la ejecucion.");}			
+			if(p.exitValue()==0){System.out.print("Ejecucion del subproceso exitosa.");}else{System.out.print("Fracaso en la ejecucion del subproceso.");}			
 		
 		}catch(Exception e) {
 			System.out.print("Ha ocurrido un error al ejecutar el script.");
 		}
 	}
-
+	
+	public void deleteZIP() {
+		this.getPaths();
+		try {
+			Process p = Runtime.getRuntime().exec(String.format("rm -f %s/webapps/ROOT/songs.zip",tomcatPath));
+			p.waitFor();
+			if(p.exitValue()==0){System.out.print("Ejecucion del subproceso exitosa.");}else{System.out.print("Fracaso en la ejecucion del subproceso.");}			
+		
+		}catch(Exception e) {
+			System.out.print("Ha ocurrido un error al ejecutar el script.");
+		}
+	}
+	
 }

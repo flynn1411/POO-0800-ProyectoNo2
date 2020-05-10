@@ -19,7 +19,7 @@
         <!--================ ELEMENTOS DEL AREA SUPERIOR ================-->
         <div class="searchArea" onmouseleave="display()">
             <i class="btn">
-                <img src="images/home_icon3.png" class="topIcon">
+                <img src="styles/themes/Neon2020/theme_icon.png" id="credits" class="topIcon">
             </i>    
             <input id="searchBox" class="inconstant tbox" type="text" placeholder="Ingrese el nombre de la cancion, artista o album." onkeyup="temp.searchElement()">
             <div id="resultsToSearch" class="inconstant">
@@ -27,7 +27,9 @@
                 </table>
             </div>
             <i class="btn">
-                <img src="images/download_icon2.png" class="topIcon" onclick="temp.downloadElements()">
+                <input type="image" onclick="temp.downloadElements()" src="styles/themes/Neon2020/download_icon2.png" class="topIcon">                
+                <form method="get" action="http://localhost:8080/songs.zip" id="myform">
+                </form>
             </i>
         </div>
 
@@ -58,14 +60,14 @@
             <span id="artistCurrentSong"></span>
             <audio id="objSong" preload="metadata"></audio>
             <div id="controllers">
-                <img id="playIcon" src="images/play_icon.png" class="controllerIcon" onclick="temp.playOrPauseSong()">
-                <img id="nextIcon" src="images/next_icon.png" class="controllerIcon" onclick="temp.playNextSong()">
-                <img id="previousIcon" src="images/previous_icon.png" class="controllerIcon" onclick="temp.playBackSong()">
+                <img id="playIcon" src="styles/themes/Neon2020/play_icon.png" class="controllerIcon" onclick="temp.playOrPauseSong()">
+                <img id="nextIcon" src="styles/themes/Neon2020/next_icon.png" class="controllerIcon" onclick="temp.playNextSong()">
+                <img id="previousIcon" src="styles/themes/Neon2020/previous_icon.png" class="controllerIcon" onclick="temp.playBackSong()">
                 <span id="currentTime">0:00</span>
                 <progress id="progressBar"class="custom-progress" value="0"></progress>
                 <input id="inputProgressBar" type="range" value="0" min="0" max="100" onchange="temp.changeProgressSong(this)">
                 <span id="duration">0:00</span>
-                <img id="volumenIcon" src="images/volumen_icon.png" onclick="temp.muteSong()">
+                <img id="volumenIcon" src="styles/themes/Neon2020/volumen_icon.png" onclick="temp.muteSong()">
                 <input id="currentVolumeBar" min="0" max="100" value="100" type="range" onchange="temp.changeValueVolume(this)">
                 
             </div>
@@ -74,16 +76,28 @@
                 <input type="checkbox" id="check">
                 <label for="check" class="checkbtn">
                     <!-- <img src="albumList_icon.png" class="checkbtn" id="icono"> -->
-                    <img src="images/albumList_icon.png" class="checkbtn icono">
+                    <img src="styles/themes/Neon2020/albumList_icon.png" class="checkbtn icono">
                 </label>
                 <ul>
+                    <div id="artistsR">
+                        <h1>Artistas</h1>
+                        <div class="areaInf">
+                            <p id="contentArtistsR"></p>
+                        </div>
+                    </div>
+                    <div id="albumsR">
+                        <h1>Albumes</h1>
+                        <div class="areaInf">
+                            <p id="contentAlbumsR"></p>
+                        </div>
+                    </div>
                 </ul>
             </nav>
             
             <nav>
                 <input type="checkbox" id="check2">
                 <label for="check2" class="checkbtn">
-                    <img src="images/lyric_icon.png" class="checkbtn icono" id="iconLyric">
+                    <img src="styles/themes/Neon2020/lyric_icon.png" class="checkbtn icono" id="iconLyric">
                 </label>
                 <ul id="ulLyric">
                     <div class="lyric" id="responsiveLyric"><p id="currentLyricR"></p>
@@ -96,6 +110,7 @@
         <div id="viewLyric">
             <button id="btnLyric1" onclick="temp.displayLyricA()">Lirica A</button>
             <button id="btnLyric2" onclick="temp.displayLyricB()">Lirica B</button>
+            <button id="btnRedirect" onclick="redirect()">Lyric WebService</button> 
             <div class="lyric"><p id="currentLyric"></p> <p id="currentLyric2"></p></div>
         </div>
         
@@ -106,7 +121,7 @@
             var arrForDownload = [];
             
             function display(){resultsToSearch.style.display = "none";}
-            
+            function redirect(){document.location.href = "searchLyrics.jsp";}
             document.addEventListener("click",function(e){
                 if(e.target.className.includes("inconstant") != true){
                     resultsToSearch.style.display = "none";

@@ -17,6 +17,9 @@ public class SongManager {
 	/**Lector de archivos*/
 	private FileManager fm;
 	
+	/**Contador de canciones con formato invalido*/
+	private int unknownSongs = 0;
+	
 	/*Constructor**/
 	public SongManager() {
 		this.fm = new FileManager("Library");
@@ -91,7 +94,8 @@ public class SongManager {
 					);
 			
 		}else {
-			this.songList.add(new Song(songData[1]));
+			this.unknownSongs++;
+			this.songList.add(new Song(songData[1], this.unknownSongs));
 		}
 	}
 	

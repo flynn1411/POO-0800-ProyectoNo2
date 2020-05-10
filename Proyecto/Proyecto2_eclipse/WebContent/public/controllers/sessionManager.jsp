@@ -1,5 +1,6 @@
 <%@page import="Project.ExecuteZIP"%>
 <%@page import="Project.SongManager"%>
+<%@page import="Project.Validator"%>
 <%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -7,7 +8,7 @@
 	SongManager songManager = new SongManager();
 	ExecuteZIP execZIP = new ExecuteZIP(); 
 
-    if(request.getParameter("command") != null){
+    if(Validator.isValid(request,"command")){
     		
 		if(request.getParameter("command").equals("addToSession")){
 	
@@ -47,9 +48,10 @@
 					out.print(jsonSelectedSongs.toString().trim());
 				}
 				
+		}else if (request.getParameter("command").equals("deleteZip")){
+			execZIP.deleteZIP();		
 		}
     }
-    
     else{
     	out.print("{\"result\":\"Unknown parameter\"}");
     }

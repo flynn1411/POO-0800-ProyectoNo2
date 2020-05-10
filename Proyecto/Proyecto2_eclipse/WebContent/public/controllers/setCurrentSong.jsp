@@ -1,17 +1,18 @@
 <%@page import="Project.SongManager"%>
+<%@page import="Project.Validator"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%><%
     
     SongManager songManager = new SongManager();
     
-	if(request.getParameter("command") != null){
+	if(Validator.isValid(request,"command")){
 	    	
 	    	if(
-	    			request.getParameter("command").toString().equals("setCurrentSong") &&
-	    			request.getParameter("title") != null &&
-	    			request.getParameter("author") != null &&
-	    			request.getParameter("album") != null
-	    			){
+	   			request.getParameter("command").toString().equals("setCurrentSong") &&
+	   			Validator.isValid(request,"title") &&
+	   			Validator.isValid(request,"author") &&
+	   			Validator.isValid(request,"album")
+	  		){
 	    		out.print(
 	    				String.format("%s",
 	    						songManager.setCurrentSong(

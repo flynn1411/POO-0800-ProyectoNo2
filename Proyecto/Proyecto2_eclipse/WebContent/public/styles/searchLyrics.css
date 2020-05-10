@@ -1,0 +1,126 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Courgette|Fira+Code|Permanent+Marker&display=swap');	
+	
+	
+	*{
+        margin: 0;
+        padding: 0;
+    }
+    
+ 	body{
+        background: url('themes/Neon2020/background4.png');
+    }
+
+    div#searchArea{
+        position: absolute;
+        /*! background-color: green; */
+        top:0;
+        left: 0;
+        width: 100%;
+        height: 10%;
+    }
+    
+    .searchBox{
+        background-color: #ffd319;
+        font-size: 15px;
+        position: absolute;
+        width: 25%;
+        height: 40%;
+        top: 25%;
+        border: 2px solid #ff2975;
+        font-family: 'Fira Code', monospace;
+    }
+    
+    input#artist{
+        left: 23%;
+    }
+    
+    input#title{
+        left: 50%;
+    }
+    
+    input#btn{
+        position: absolute;
+        width: 11%;
+        height: 49%;
+        top: 26%;
+        left: 76%;
+        font-size: 90%;
+        border: 3px solid #ffd319;
+        /*! border-radius: 31%; */
+        color: #ffd319;
+        font-family: 'Permanent Marker', cursive;
+        background-color: #8c1eff;
+    }
+    
+    div#viewArea{
+        position: absolute;
+        /*! background-color: red; */
+        top:10%;
+        left: 0;
+        width: 100%;
+        height: 90%;
+    }
+    
+    .lyricArea{
+        position: absolute;
+        width: 35%;
+        height: 84%;
+        top: 8%;
+        background-color: transparent;
+        /*! border: 2px solid #ff901faliceblue; */
+        border-radius: ;
+    }
+    
+    div#methodA{
+        left: 10%;
+        border: 2px solid #ff901f;
+        color: #ff901f;
+    }
+    
+    div#methodB{
+        left: 55%;
+        border: 2px solid #ff2975;
+        color: #ff2975;
+    }
+    
+    .lyric{
+        position: absolute;
+        top: 8%;
+        left: 10%;
+        width: 85%;
+    }
+    
+    .content{
+        overflow-y: auto;
+        position: absolute;
+        top: 5%;
+        left: 10%;
+        width: 80%;
+        height: 90%;
+        background-color: transparent;
+        font-size: 20px;
+        font-family: 'Fira Code', monospace;
+        /*! color: #f222ff; */
+    }
+    
+    .searchArea .btn{
+        border: none;
+        outline: none;
+        font-family: tahoma;
+        transition: 0.5s;
+    }
+    
+    .topIcon{
+        position: absolute;
+        width: 5%;
+        height: auto;
+        background: transparent;
+        cursor: pointer;
+        top: 20%;
+    }
+    
+    h2{
+    	text-align: center;
+    	font-family: 'Courgette', cursive;
+    }

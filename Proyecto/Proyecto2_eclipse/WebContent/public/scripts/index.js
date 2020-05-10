@@ -13,7 +13,9 @@ function ViewFunctions(){
     this.loadArtistsAndAlbums = function(){
         currentLyric2.style.display = "none";
         var htmlArtists = '<body>',
-            htmlAlbums= '<body>';
+            htmlAlbums= '<body>',
+            htmlArtistsR = "",
+            htmlAlbumsR = "";
             arrOfArtists = [],
             arrOfAlbums = [];
 
@@ -40,9 +42,11 @@ function ViewFunctions(){
                 //Se agregan los albumes y artistas al html correspondiente.
                 for(let artist in arrOfArtists){
                     htmlArtists += `<tr><td>${arrOfArtists[artist]}</td></tr>`;
+                    htmlArtistsR +=`${arrOfArtists[artist]}<br>`;
                 }
                 for(let album in arrOfAlbums){
                     htmlAlbums += `<tr><td>${arrOfAlbums[album]}</td></tr>`;
+                    htmlAlbumsR += `${arrOfAlbums[album]}<br>`;
                 }
                 
                 //Se cierra el cuerpo del html de la tabla.
@@ -52,6 +56,8 @@ function ViewFunctions(){
                 //Se agregar el html al contenido del objeto tabla.
                 contentArtists.innerHTML = htmlArtists;
                 contentAlbums.innerHTML = htmlAlbums;
+                contentArtistsR.innerHTML = htmlArtistsR;
+                contentAlbumsR.innerHTML = htmlAlbumsR;
             };
         $.get(action,parameters,callback);   
     }
@@ -166,14 +172,14 @@ function ViewFunctions(){
         if(objSong.volume != 0){
             volumeSave = objSong.volume;
             objSong.volume = 0; 
-            volumenIcon.src = "images/volumen_icon2.png";
+            volumenIcon.src = "styles/themes/Neon2020/volumen_icon2.png";
             currentVolumeBar.value = "0";
         }else{
             if(volumeSave == 0){
                 volumeSave = 0.5;
             }
             objSong.volume = volumeSave;
-            volumenIcon.src = "images/volumen_icon.png";
+            volumenIcon.src = "styles/themes/Neon2020/volumen_icon.png";
             currentVolumeBar.value = (volumeSave*100).toString();
         }
     }
@@ -181,15 +187,14 @@ function ViewFunctions(){
 //============================= FUNCIONES AUXILIARES DE LOS CONTROLES =================================
     //------------ Descarga los elementos seleccionados en el checkbox ----------------
     this.downloadElements = function(){               
-        //console.log(arrForDownload);
-        //console.log(selectedSongsOfSession);
         var action = "controllers/sessionManager.jsp",
             parameters = {"command":"addToSession","option":"2"},
             callback = function(content){
-                    //console.log(content);
+                myform.submit();
+                $.post(action,{"command":"deleteZip"},function(content){});
             };
             $.post(action,parameters,callback);
-    }
+        }
 
     //Aplica el checked a las canciones que previamente fueron seleccionadas y guardadas en la sesion.
     this.loadCheckedSongs = function(){
@@ -238,9 +243,9 @@ function ViewFunctions(){
         volumeSave = newVolume;
 
         if(newVolume == 0){
-            volumenIcon.src = "images/volumen_icon2.png";
+            volumenIcon.src = "styles/themes/Neon2020/volumen_icon2.png";
         }else{
-            volumenIcon.src = "images/volumen_icon.png";
+            volumenIcon.src = "styles/themes/Neon2020/volumen_icon.png";
         }
 
     }
@@ -295,24 +300,33 @@ function ViewFunctions(){
                     artistCurrentSong.innerHTML = author; 
                     updateMaxProgress();
                     if(result.artworkFile == "Not Found"){
-                        albumImage.src = "images/artworkDefault.jpg";
+                        albumImage.src = "styles/themes/Neon2020/artworkDefault.png";
                     }else{
                         albumImage.src = `${pathOfCurrentSong}/${result.artworkFile}`;
                     }
                     
                     //setLyrics(title, author);
                     $.post("controllers/LyricsController.jsp",{"command":"api","artist":author,"title":title}, function(data){
-                		//console.log(data);
-                    	let json = JSON.parse(data);
-                    	
-                		let apiLyric = json.lyrics.replace("\\n", "<br>");
-                		//currentLyricR.innerHTML = apiLyric;
-                		currentLyric.innerHTML = apiLyric;
+                		if(data.trim()!=""){
+                			let json = JSON.parse(data);
+                			
+                			let apiLyric = json.lyrics.replace("\\n", "<br>");
+                			currentLyric.innerHTML = apiLyric;                			
+                            currentLyricR.innerHTML = json.lyrics;
+                        }else{
+                            currentLyric.innerHTML = "No encontrado.";                			
+                            currentLyricR.innerHTML = "No encontrado.";
+                		}
                 	});
                     $.post("controllers/LyricsController.jsp",{"command":"az","artist":author,"title":title}, function(data){
-                    	let json = JSON.parse(data);
-                        currentLyric2.innerHTML = json.Lyrics; 
-                        //console.log(json);
+                        if(data.trim() != ""){
+                            let json = JSON.parse(data);
+                            currentLyric2.innerHTML = json.Lyrics;
+                        }
+                        else{
+                            currentLyric2.innerHTML = "No encontrado.";                			
+                            currentLyricR.innerHTML = "No encontrado.";
+                        }
                 	});
                 };
             }
@@ -334,10 +348,10 @@ function ViewFunctions(){
     //Cambia un icono dependiendo del estado play/pause de la cancion.
     this.changeIconStateSong = function(){
         if(objSong.paused == true){
-            playIcon.src = "images/play_icon.png";
+            playIcon.src = "styles/themes/Neon2020/play_icon.png";
         }
         if(objSong.paused == false){
-            playIcon.src = "images/pause_icon.png";
+            playIcon.src = "styles/themes/Neon2020/pause_icon.png";
         }        
     }
 

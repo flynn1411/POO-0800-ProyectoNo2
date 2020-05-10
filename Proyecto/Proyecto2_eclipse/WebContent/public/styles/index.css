@@ -1,21 +1,53 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Courgette|Fira+Code|Permanent+Marker&display=swap');
 /*==============================> TEMAS <======================================*/
 body{
-    background-color: var(--bg-topLine);
+    background-image: var(--bg-bodyImage);
 }
 
 .default{
+    --bg-bodyImage : url('themes/Neon2020/background4.png');
     --bg-topLine: #272727;
     --bg-upperArea :#343057;
     --bg-leftArea :#BB5E5E;
     --bg-rightArea :#AE3434;
     --bg-centerArea :#BB5E5E; 
+    --table-fontColor : #f222ff;
+    --titleArtistsList-fontColor : #ff901f;
+    --titleArtists-fontFamily : 'Permanent Marker', cursive;
+    --titleAlbumsList-fontColor : #f222ff;
+    --titleAlbums-fontFamily : 'Permanent Marker', cursive;
+    --borderArtists-color : #ff901f;
+    --albumList-border: 3px solid #f222ff;
+    --albumImage-boxShadow : 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f4225a, 0 0 20px #f4225a, 0 0 25px #f4225a, 0 0 30px#f4225a, 0 0 35px #f4225a;
+    --nameCurrentSong-color : #ffd319;
+    --nameCurrentSong--textShadow : 0 0 1px #fff, 0 0 3px #fff, 0 0 4px #ffd319, 0 0 5px #ffd319, 0 0 25px #ffd319, 0 0 30px #ffd319, 0 0 35px #ffd319;
+    --nameCurrentSong--fontFamily : 'Fira Code', monospace;
+    --artistCurrentSong-color: #ff901f;
+    --artistCurrentSong-textShadow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #ff901f, 0 0 2px #ff901f, 0 0 25px #ff901f, 0 0 30px #ff901f, 0 0 35px #ff901f;
 }
 .light{
 
 }
-.dark{
-
+.chameleon{
+   --bg-topLine: #272727;
+    --bg-upperArea :#343057;
+    --bg-leftArea :#BB5E5E;
+    --bg-rightArea :#AE3434;
+    --bg-centerArea :#BB5E5E; 
+    --table-fontColor : #f222ff;
+    --titleArtistsList-fontColor : #ff901f;
+    --titleArtists-fontFamily : 'Permanent Marker', cursive;
+    --titleAlbumsList-fontColor : #f222ff;
+    --titleAlbums-fontFamily : 'Permanent Marker', cursive;
+    --borderArtists-color : #f222ff;
+    --albumList-border: 3px solid #f222ff;
+    --albumImage-boxShadow : 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #f4225a, 0 0 20px #f4225a, 0 0 25px #f4225a, 0 0 30px#f4225a, 0 0 35px #f4225a;
+    --nameCurrentSong-color : #ffd319;
+    --nameCurrentSong--textShadow : 0 0 1px #fff, 0 0 3px #fff, 0 0 4px #ffd319, 0 0 5px #ffd319, 0 0 25px #ffd319, 0 0 30px #ffd319, 0 0 35px #ffd319;
+    --nameCurrentSong--fontFamily : 'Fira Code', monospace;
+    --artistCurrentSong-color: #ff901f;
+    --artistCurrentSong-textShadow: 0 0 1px #fff, 0 0 1px #fff, 0 0 1px #ff901f, 0 0 2px #ff901f, 0 0 25px #ff901f, 0 0 30px #ff901f, 0 0 35px #ff901f;
 }
 
 /* ============================> AREA DE BUSQUEDA <============================*/
@@ -27,6 +59,12 @@ body{
     cursor: pointer;
     top: 20%;
 }
+
+#credits{
+	width: 5%;
+	height: auto;
+}
+
 .searchArea{
     position: absolute;
     top: 0;
@@ -38,14 +76,14 @@ body{
 }
 
 i{
-    background-color: #2c3e50;
+    background-color: black;
     width: 50%;
     line-height: 50px;
     color: white;
     font-size: 20px;
     border: none;
     outline: none;
-    font-family: tahoma;
+    font-family: 'Fira Code', monospace;
     transition: 0.5s;
     text-align: center;
 }
@@ -54,7 +92,7 @@ i{
 .searchArea .btn{
     border: none;
     outline: none;
-    font-family: tahoma;
+    font-family: 'Fira Code', monospace;
     transition: 0.5s;
 }
 
@@ -62,23 +100,25 @@ i{
     width: 0;
     font-size: 15px;
     font-family: tahoma;
+    color: #ff073a;
     background: linear-gradient(to top left, #BF3838, #D07B7B, #EA1414);
 }
 
 .searchArea:hover > .tbox{
     width: 100%;
-    background: white;
+    background: #62c1fe;
 }
 
 div#resultsToSearch{
-    overflow: auto;
+    overflow-y: auto;
     position: absolute;
     top: 100%;
     display: none;
     left: 25%;
     width: 50.04%;
     height: 320%;
-    background-color: azure;
+    background-color: #62c1fe;
+    color: #ffd319;
     z-index: 1;
 }
 
@@ -87,7 +127,7 @@ div#viewAlbumAndArtist{
     position: absolute;
     width: 25%;
     height: 90%;
-    background-color: var(--bg-leftArea);
+    background-color: transparent;
     top: 10%;
     left: 0;
 }
@@ -98,35 +138,54 @@ div#viewAlbumAndArtist{
     top: 1%;
     left: 4%;
     font-size: 25px;
-    color: white;
+    color: var(--titleArtistsList-fontColor);
+    font-family: var(--titleArtists-fontFamily);
 }
 div#artist{
-    overflow:auto;
+    overflow-x:auto;
+    overflow-y:auto;
     position: absolute;
     width: 91%;
     height: 42%;
     top: 6%;
     left: 4%;
-    background-color: white;
+    background-color: transparent;
+    font-family: 'Fira Code', monospace;
+    border: 3px solid var(--borderArtists-color);
+	border-radius: 5%;
 }
+
+table#contentArtists{
+	color: #ff901f;
+}
+
+table#contentAlbums{
+	color: #f222ff;
+}
+
 table#tableOfResults td{
     min-width: 600px;
     width: 800px;
 }
+
+table#tableOfResults{
+	color: #ff073a;
+	background-color: #62c1fe;
+}
+
 table{
     position: absolute;
     display: block;
-    background-color: white;
+    background-color: transparent;
     top:0;
     font-size: 17px;
-    font-family: 'Lusitana', serif;
     width: 100%;
     height: auto;
     border-collapse: collapse;
 }
-tr:nth-child(even){
+/*tr:nth-child(even){
     background-color: #ddd;
-}
+}*/
 
 tr:hover td{
     background-color: #55BB6A;
@@ -144,16 +203,21 @@ td {
     top: 51%;
     left: 4%;
     font-size: 25px;
-    color: white;
+    color: var(--titleAlbumsList-fontColor);
+    font-family: var(--titleAlbums-fontFamily);
 }
 div#album{
-    overflow:auto;
+    overflow-x:auto;
+    overflow-y:auto;
     position: absolute;
     width: 91%;
     height: 42%;
     top: 56%;
     left: 4%;
-    background-color: #fff;
+    background-color: transparent;
+    font-family: 'Courgette', cursive;
+    border: var(--albumList-border);
+	border-radius: 5%;
 }
 
 /* ==========================> AREA DE VISUALIZACION DE INFORMACION DE LA CANCION <================================*/
@@ -161,8 +225,6 @@ div#viewInfo{
     position: absolute;
     width: 50%;
     height: 90%;
-    background-color: var(--bg-rightArea);
-    background: linear-gradient(to top left, #BF3838, #D07B7B, #EA1414);
     top: 10%;
     left: 25%;
     display: inline-block;
@@ -174,18 +236,25 @@ img#albumImage{
     width: 40%;
     top: 7%;
     height: auto;
+    border-radius: 50%;
+    box-shadow: var(--albumImage-boxShadow);
+    /* animation: linear 0.9s infinite beat; */
 }
 span#nameCurrentSong{
     position: relative;
     top: 13%;
     font-size: 30px;
-    font-family: 'Kalam', cursive;
+    font-family: var(--nameCurrentSong--fontFamily);
+    color: var(--nameCurrentSong-color);
+    text-shadow: var(--nameCurrentSong--textShadow);
 }
 span#artistCurrentSong{
     position: relative;
     font-size: 25px;
-    font-family: 'Kalam', cursive;
+    font-family: 'Courgette', cursive;
     top: 15%;
+    color: var(--artistCurrentSong-color);
+    text-shadow: var(--artistCurrentSong-textShadow);
 }
 audio{
     position: absolute;
@@ -200,7 +269,7 @@ div#controllers{
     left: 0%;
     width: 100%;
     height: 17%;
-    background:linear-gradient(to top left, #7D7575, #5E4949, #000000);
+    /*! background:linear-gradient(to top left, #E44CC8, #2200E7,#780046); */
 }
 
 /*---------------------BARRA DE CONTROL Y ELEMENTOS ADYACENTES--------------------------*/
@@ -256,11 +325,12 @@ img:hover{
 
 span#currentTime{
     position: absolute;
-    color: white;
     font-size: 15px;
     top: 65%;
     left: 5%;
     display: block;
+    color: #ffd319;
+	font-family: 'Permanent Marker', cursive;
 }
 /*----------------- BARRA DESPLAZADORA DE PROGRESO------------*/
 input#inputProgressBar{
@@ -312,7 +382,8 @@ input#inputProgressBar::-moz-range-thumb {
 
 span#duration{
     position: absolute;
-    color: white;
+    color: #ffd319;
+	font-family: 'Permanent Marker', cursive;
     font-size: 15px;
     top: 65%;
     left: 88%;    
@@ -356,24 +427,39 @@ input#currentVolumeBar::-moz-range-thumb {
 /*=======================================================================================*/
 /* ============================> AREA DE VISUALIZACION DE LETRAS DE LA CANCION <============================*/
 button{
-    background: skyblue;
-    width: 49%;
-    height: 5%;
+    border: 3px solid #ffd319;
+	color: #ffd319;
+	font-family: 'Permanent Marker', cursive;
+	background-color: #8c1eff;
+    width: 30%;
+    position: absolute;
+    top: 0;
+	border-radius: 10%;
+}
+button#btnLyric1{
+    left: 3%;
+}
+button#btnLyric2{
+    left: 35.6%;
+}
+button#btnRedirect{
+    left: 68%;
 }
 div#viewLyric{
     position: absolute;
     width: 25%;
     height: 90%;
-    background-color: var(--bg-centerArea);
+    background-attachment: linear-gradient(to top left, #E44CC8, #2200E7,#780046);
     top: 10%;
     left: 75%;
+    background: linear-gradient(to top left, #E44CC8, #2200E7,#780046);
 }
 .lyric{
     position: absolute;
     text-align: center;
     justify-content: center;
-    background-color: #E0D8D8;
-    color: black;
+    background-color: transparent;
+    color: #ffd319;
     top: 6%;
     left: 5%;
     width: 91%;
@@ -384,19 +470,28 @@ div#viewLyric{
 div#responsiveLyric{
     display: none;
 }
+
 p{
-    font-family: 'Vollkorn', serif;
+    font-family: 'Fira Code', monospace;
     font-size: 20px;
     margin-left: 15px;
     margin-right: 15px;
 }
-
+nav{
+    display: none;
+}
 /*========================== RESPONSIVE ========================================*/
 
 @media screen and (max-width: 720px){
+    nav{
+        display: block;
+    }
+    .topIcon{
+        width: 5%;
+    }
     div#viewInfo{
         background-color: green;
-        background: linear-gradient(to top left, #5744A5, #9989DB, #3403FF);
+       background-image: var(--bg-bodyImage);
         left: 0;
         top: 10%;
         width: 100%;
@@ -429,11 +524,11 @@ p{
         display: none;
         z-index: -1;
     }
-    div#viewAlbumAndArtist{
+/*     div#viewAlbumAndArtist{
         display: none;
-    }
+    } */
     img#albumImage{
-    	width:55%;
+    	width:45%;
     	}
     img#playIcon{
         width: 15%;
@@ -466,9 +561,9 @@ p{
         display: inline-block;
     }
     ul{
-        width: 94%;
+        width: 92%;
         height: 72%;
-        background: #55BB6A;
+        background: #8ffcff;
         top: -3%;
         left: -120%;
         text-align: center;
@@ -478,7 +573,7 @@ p{
     }
     ul#ulLyric{
         left: 100%;
-        background: #EA1414;
+        background: #8c1eff;
     }
     #check:checked ~ ul{
         display: block;
@@ -500,4 +595,35 @@ p{
     div#responsiveLyric{
         display: inline-block;
     }
-}
+
+    div#artistsR{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        color: var(--titleArtistsList-fontColor);
+		font-family: var(--titleArtists-fontFamily);
+    }
+    div#albumsR{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 50%;
+        height: 100%;
+        color: var(--titleAlbumsList-fontColor);
+ 		font-family: var(--titleAlbums-fontFamily);
+    }
+    .areaInf{
+        position: absolute;
+        top: 12%;
+        left: 5%;
+        background: transparent;
+        border: 1px solid #ff2975;
+        border-radius: 3%;
+        width: 90%;
+        height: 83%;
+        overflow-y: auto;
+        text-align: left;
+    }
+} 
